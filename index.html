@@ -6,12 +6,11 @@
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
 
-  <!-- Leaflet JS / CSS -->
-  <script src="https://unpkg.com/leaflet@1.9/dist/leaflet-src.js"></script>
+  <!-- Leaflet CSS -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9/dist/leaflet.css">
-
-  <!-- Leaflet-Rotate -->
-  <script src="https://unpkg.com/leaflet-rotate@0.2.8/dist/leaflet-rotate-src.js"></script>
+  <!-- for the collapsible sidebar -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" />
+  <link rel="stylesheet" href="src/leaflet-sidebar.css" />
 
   <style>
     body {
@@ -43,6 +42,14 @@
 <body>
 
   <div id="map"></div>
+
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet@1.9/dist/leaflet-src.js"></script>
+  <!-- Leaflet-Rotate -->
+  <script src="src/leaflet-rotate-src.js"></script>
+  <!-- sidebar -->
+  <script src="src/svg-icon.js"></script>
+  <script src="src/leaflet-sidebar.js"></script>
 
   <script>
 
@@ -81,7 +88,7 @@
       bearing: 79,
       // attributionControl: false,
       // zoomControl: false,
-      // compassBearing: false,
+      // compassBearing: true,
       // trackContainerMutation: false,
       // shiftKeyRotate: false,
       // touchGestures: true,
