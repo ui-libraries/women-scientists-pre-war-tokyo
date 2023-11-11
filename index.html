@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Early 20th Century Women Scholars in Tokyo</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+
+  <!-- Leaflet JS / CSS -->
+  <script src="https://unpkg.com/leaflet@1.9/dist/leaflet-src.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9/dist/leaflet.css">
+
+  <!-- Leaflet-Rotate -->
+  <script src="https://unpkg.com/leaflet-rotate@0.2.8/dist/leaflet-rotate-src.js"></script>
+
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+    }
+
+    #map {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 100%;
+    }
+
+    /* Prevent the rotation control background from changing colors on click */
+    .leaflet-control-rotate a,
+    .leaflet-control-rotate a:active,
+    .leaflet-control-rotate a:focus {
+      background-color: rgba(255,255,255,1) !important;
+    }
+    /* Give it a slightly darker background on hover */
+    .leaflet-control-rotate a:hover {
+      background-color: #e6e6e6 !important;
+    }
+
+  </style>
+</head>
+
+<body>
+
+  <div id="map"></div>
+
+  <script>
+
+    const osm = L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 24,
+      maxNativeZoom: 19,
+      attribution: '&copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+      // noWrap: true
+    });
+
+    const mierune = L.tileLayer('https://tile.mierune.co.jp/mierune_mono/{z}/{x}/{y}.png', {
+      minZoom: 0,
+      maxZoom: 18,
+      attribution: '&copy; <a href="https://mierune.co.jp/">mierune</a>',
+      // noWrap: true
+    });
+
+    const historic = L.tileLayer('./tokyo-map-tiles/{z}/{x}/{y}.png', {
+      tms: 1,
+      minZoom: 10,
+      maxZoom: 16,
+      // noWrap: true
+    });
+
+    const map = L.map('map', {
+      center: [35.6815, 139.761],
+      zoom: 13,
+      layers: [historic],
+      // worldCopyJump: true,
+      // preferCanvas: false,
+      rotate: true,
+      rotateControl: {
+        closeOnZeroBearing: false,
+        // position: 'bottomleft',
+      },
+      bearing: 79,
+      // attributionControl: false,
+      // zoomControl: false,
+      // compassBearing: false,
+      // trackContainerMutation: false,
+      // shiftKeyRotate: false,
+      // touchGestures: true,
+      touchRotate: true,
+      // touchZoom: true
+    });
+
+    // move the zoom control to the top right corner
+    map.zoomControl.setPosition('topright');
+
+    // move the rotate control to the top right corner
+    map.rotateControl.setPosition('topright');
+
+  </script>
+
+</body>
+
+</html>
