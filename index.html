@@ -8,10 +8,17 @@
 
   <!-- Leaflet CSS -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9/dist/leaflet.css">
+  <!-- fonts -->
+    <!-- link to Montserrat font -->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+    <!-- link to Orpheus Pro Bold font -->
+    <link href="https://db.onlinewebfonts.com/c/81651a191b7129993b0871c834a19600?family=OrpheusPro-Bold" rel="stylesheet"> 
+    <!-- link to Poppins font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap" rel="stylesheet"> 
   <!-- for the collapsible sidebar -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" />
   <link rel="stylesheet" href="src/leaflet-sidebar.css" />
-
+  
   <style>
     body {
       margin: 0;
@@ -36,10 +43,224 @@
       background-color: #e6e6e6 !important;
     }
 
+    h1 {
+      color: white;
+      font-size: 16px;
+      display: inline-block;
+      margin-top: 0.5em;
+      margin-bottom: 0.0em;
+      margin-left: 0.8em;
+      margin-right: 0;
+      font-weight: normal;
+      font-family: "Montserrat";
+    }
+
+    h2 {
+      font-size: 12px;
+      color: white;
+      display: inline-block;
+      margin-top: 0.25em;
+      margin-bottom: 0.0em;
+      margin-left: 1.0em;
+      margin-right: 0;
+      font-weight: normal;
+      font-family: "Montserrat";
+    }
+
+    h4 {
+      font-size: 16px;
+      margin: 4px;
+    }
+
+    h5 {
+      font-size: 13px;
+      margin: 4px;
+    }
+
+    /* Legend styles */
+    .legend,
+    .caseLegend {
+      padding: 6px 8px;
+      font-size: 1em;
+      background: rgba(75, 75, 75, 0.8);
+      color: whitesmoke;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+      border-radius: 5px;
+      width: 180px;
+    }
+
+    .overlay-item {
+        position: relative;
+        background-color: white;
+        width: 12px;
+        height: 12px;
+        margin-right: 5px;
+        display: inline-block;
+    }
+
+    .overlay-item-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: inline-block;
+    }
+
+    /* collapsible div css */
+    .header {
+      display: flex;
+      align-items: center;
+    }
+
+    #collapseButton {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 1rem;
+      color: #333;
+      margin-right: 10px; /* Add some spacing between the button and the h2 element */
+    }
+
+    #collapseButton .icon {
+      margin-right: 5px;
+    }
+
+    /* lockup styles */
+    .sidebar-pane {
+      display: flex;
+      align-items: center;
+    }
+
+    .svg-container {
+      display: flex; /* Arrange logos horizontally */
+      max-height: 120px;
+      width: 100%;
+      overflow: hidden;
+    }
+
+    .svg-item {
+      flex: 0 0 auto; /* Prevent logos from growing or shrinking */
+      margin-right: -150px; /* Adjust the margin to control the spacing between logos */
+      margin-left: -160px;
+      margin-bottom: -35px;
+    }
+
+    /* For maintaining aspect ratio, set either width or height to "auto" */
+    .svg-item img {
+      width: 400px; /* Set the desired width for the SVG logo */
+      height: auto; /* Set height to "auto" for maintaining aspect ratio */
+    }
+
+    /* custom sidebar css */
+      /* sidebar header */
+      .sidebar-header {
+        width: 100%;
+        font-family: "OrpheusPro-Bold"; 
+      }
+
+      /* sidebar icon */
+      i {
+        color: rgb(0, 0, 0);
+      }
+
+      /* sidebar about heading */
+      .about {
+        color: rgb(0, 0, 0);
+        font-family: "OrpheusPro-Bold"; 
+        font-size: 16px;
+        margin-bottom: 0px;
+        margin-top: 0px;
+        margin-left: 0px;
+      }
+
+      /* selection heading */
+      .choose {
+        color: rgb(0, 0, 0);
+        font-family: "OrpheusPro-Bold"; 
+        font-size: 16px;
+        margin-bottom: 0px;
+        margin-top: 0px;
+        margin-left: 0px;       
+      }
+
+      /* map info */
+      .details {
+        font-family: 'Poppins', sans-serif;
+        font-size: 13px;
+        font-weight: normal;
+        margin-bottom: 0px;
+        margin-top: 0px;
+      }
+
+      .instructions {
+        font-family: 'Poppins', sans-serif;
+        font-size: 12px;
+        font-weight: normal;
+        margin-bottom: 0px;
+        margin-top: 0px;        
+      }
+
+      .introbreak {
+        display: block;
+        margin-bottom: 1em;
+      }    
+
   </style>
 </head>
 
 <body>
+
+  <div id="sidebar" class="sidebar collapsed">
+    <div class="sidebar-tabs">
+      <ul role="tablist">
+        <li><a href="#home" role="tab"><i class="fa fa-bars"></i></a></li>
+      </ul>
+    </div>
+    <div class="sidebar-content">
+      <div class="sidebar-pane" id="home">
+        <h1 class="sidebar-header">Women Scholars in Pre-War Tokyo<span class="sidebar-close"><i class="fa fa-caret-left"></i></span></h1><br>
+        <br>
+        <div class="header">
+          <button id="collapseButton"><span class="icon"><i class="fas fa-chevron-up"></i></span></button>
+          <h2 class="about">About This Project</h2>
+        </div>
+        <div id="collapsibleContent">
+          </b><br>
+          <h3 class="details">Details about the project should go here. These will be added as the project progresses. Check back soon for more information.</h3>
+          <p style="padding-bottom:0px"></p>
+        </div>
+        <div id="radio-select">
+          <p><h2 class="choose">Choose from the following options.</h2></p>
+          <input type="radio" id="option-one" name="select" value="option-one" checked>
+          <label for="option-one">Option One</label><br>
+
+          <input type="radio" id="option-two" name="select" value="option-two">
+          <label for="option-two">Option Two</label><br>
+          
+          <input type="radio" id="option-three" name="select" value="option-three">
+          <label for="option-three">Option Three</label><br>  
+        </div>
+        <div id="dropdown-instructions">
+          <p><h2 class="choose">Select your topic of interest.</h2></p>
+        </div>
+        <form id="map_parameters" name="map_parameters" action="#" accept-charset="utf-8" class="inlineForm"><select id="chapter-select" class="div-toggle" data-target=".my-info-1"></select></form>
+        <!-- Add a button to trigger the handleButtonClick() function -->
+        <div id="search-instructions">
+          <p><h2 class="choose">Click the search button or zoom back to Tokyo.</h2></p>
+        </div>
+        <!-- Wrap the buttons in a container div to control their layout -->
+        <div class="button-container">
+          <button onclick="handleButtonClick()">Search</button>
+          <button onclick="handleZoomOutClick()">Zoom Out</button>
+        </div>        
+        <span class='introbreak'></span>
+        <div id="sidebar-info" class="my-info-1">
+          <div id="content-info" class="contentinfo hide"></div>
+        </div>      
+      </div>
+    </div>
+  </div>  
 
   <div id="map"></div>
 
@@ -101,6 +322,45 @@
 
     // move the rotate control to the top right corner
     map.rotateControl.setPosition('topright');
+
+    // add a sidebar to the map
+    const sidebar = L.control.sidebar("sidebar").addTo(map);
+    sidebar.open("home");
+
+    // code to collapse about content
+    const collapseButton = document.getElementById('collapseButton');
+    const collapsibleContent = document.getElementById('collapsibleContent');
+
+    collapseButton.addEventListener('click', function() {
+      if (collapsibleContent.style.display === 'none') {
+        collapsibleContent.style.display = 'block';
+        collapseButton.innerHTML = '<span class="icon"><i class="fas fa-chevron-up"></i></span>';
+      } else {
+        collapsibleContent.style.display = 'none';
+        collapseButton.innerHTML = '<span class="icon"><i class="fas fa-chevron-down"></i></span>';
+      }
+    });
+
+    // Define the handleButtonClick() function
+    function handleButtonClick() {};
+
+    // Define the handleZoomOutClick() function
+    function handleZoomOutClick() {
+      // Perform the zoom-out operation using fitBounds()
+      map.fitBounds([
+          [35.59883, 139.68365],
+          [35.76010, 139.83842]
+      ]);
+
+      // After a short delay (e.g., 500 milliseconds), zoom in
+      setTimeout(function() {
+          const currentZoom = map.getZoom(); // Get the current zoom level
+          const newZoom = currentZoom + 1;   // Increase the zoom level by 1
+
+          // Set the new zoom level
+          map.setZoom(newZoom);
+      }, 500); // Adjust the delay as needed    
+    };    
 
   </script>
 
