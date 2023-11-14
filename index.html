@@ -36,11 +36,34 @@
     .leaflet-control-rotate a,
     .leaflet-control-rotate a:active,
     .leaflet-control-rotate a:focus {
-      background-color: rgba(255,255,255,1) !important;
+      background-color: rgba(254,246,217, 1) !important;
     }
     /* Give it a slightly darker background on hover */
     .leaflet-control-rotate a:hover {
-      background-color: #e6e6e6 !important;
+      background-color: rgb(239, 232, 205) !important;
+      /* Change cursor to grabbing */
+      cursor: grabbing !important;
+    }
+    /* Change cursor to grabbing on hover */
+    .leaflet-control-rotate-arrow:hover {
+      cursor: grabbing !important;
+    }
+    /* Change cursor to grabbing (closed hand) on click */
+    .leaflet-control-rotate-arrow:active {
+      cursor: grabbing !important;
+    }
+
+    /* Style the zoom control background */
+    .leaflet-control-zoom a,  
+    .leaflet-control-zoom a:active,
+    .leaflet-control-zoom a:focus {
+      background-color: rgba(254,246,217, 1) !important;
+    }
+    /* Style the zoom control background on hover */
+    .leaflet-control-zoom a:hover {
+      background-color: rgb(239, 232, 205) !important;
+      /* Change cursor to pointer */
+      cursor: pointer !important;
     }
 
     h1 {
@@ -360,7 +383,19 @@
           // Set the new zoom level
           map.setZoom(newZoom);
       }, 500); // Adjust the delay as needed    
-    };    
+    };   
+    
+    // Write a function to get the width of the screen outside of the sidebar
+    function getMapWidth() {
+      const sidebarWidth = document.getElementById('sidebar').offsetWidth;
+      const mapWidth = window.innerWidth - sidebarWidth;
+      return mapWidth;
+    };
+
+    // Log the map width to the console with the getMapWidth() function when the sidebar is toggled
+    sidebar.on('content', function (ev) {
+      console.log(getMapWidth());
+    });
 
   </script>
 
