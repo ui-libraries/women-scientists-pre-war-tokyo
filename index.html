@@ -321,7 +321,8 @@
     });
 
     const map = L.map('map', {
-      center: [35.651815, 139.753943],
+      //center: [35.651815, 139.753943],
+      center: [35.6470073,139.7524151],
       zoom: 13,
       layers: [historic],
       // worldCopyJump: true,
@@ -375,7 +376,8 @@
     // Define the handleZoomOutClick() function
     function handleZoomOutClick() {
       // set the map center
-      map.setView([35.651815, 139.753943], 13);
+      //map.setView([35.651815, 139.753943], 13);
+      map.setView([35.6470073,139.7524151], 13);
       // set the map bearing
       map.setBearing(79);
     };
