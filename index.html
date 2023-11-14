@@ -23,6 +23,7 @@
     body {
       margin: 0;
       padding: 0;
+      background: rgba(55, 25, 10, 1);
     }
 
     #map {
@@ -30,6 +31,7 @@
       top: 0;
       bottom: 0;
       width: 100%;
+      background: rgba(55, 25, 10, 1);
     }
 
     /* Prevent the rotation control background from changing colors on click */
@@ -319,7 +321,7 @@
     });
 
     const map = L.map('map', {
-      center: [35.6815, 139.761],
+      center: [35.651815, 139.753943],
       zoom: 13,
       layers: [historic],
       // worldCopyJump: true,
@@ -364,27 +366,21 @@
       }
     });
 
+    // Define the map bounds
+    //const mapBounds = [[35.59883, 139.68365],[35.76010, 139.83842]];
+
     // Define the handleButtonClick() function
     function handleButtonClick() {};
 
     // Define the handleZoomOutClick() function
     function handleZoomOutClick() {
-      // Perform the zoom-out operation using fitBounds()
-      map.fitBounds([
-          [35.59883, 139.68365],
-          [35.76010, 139.83842]
-      ]);
-
-      // After a short delay (e.g., 500 milliseconds), zoom in
-      setTimeout(function() {
-          const currentZoom = map.getZoom(); // Get the current zoom level
-          const newZoom = currentZoom + 1;   // Increase the zoom level by 1
-
-          // Set the new zoom level
-          map.setZoom(newZoom);
-      }, 500); // Adjust the delay as needed    
-    };   
+      // set the map center
+      map.setView([35.651815, 139.753943], 13);
+      // set the map bearing
+      map.setBearing(79);
+    };
     
+/* Some code to shift the map to the right when the sidebar is open 
     // Write a function to get the width of the screen outside of the sidebar
     function getMapWidth() {
       const sidebarWidth = document.getElementById('sidebar').offsetWidth;
@@ -392,10 +388,36 @@
       return mapWidth;
     };
 
-    // Log the map width to the console with the getMapWidth() function when the sidebar is toggled
-    sidebar.on('content', function (ev) {
-      console.log(getMapWidth());
+    const originalMapWidth = getMapWidth();
+
+    // Wait until the sidebar is fully closed (animation is finished)
+    sidebar.on('closing', function (ev) {
+      // After a short delay (e.g., 500 milliseconds), zoom in
+      setTimeout(function() {
+        // Define the percentage of the screen width that the map should occupy
+        let mapWidthPercentage = getMapWidth() / originalMapWidth * 100;
+        let mapLeft = 100 - mapWidthPercentage;
+        // Using mapLeft, reset the map css left property
+        map.getContainer().style.left = mapLeft + '%';
+        map.getContainer().style.width = mapWidthPercentage + '%';
+      }, 500);
     });
+
+    // Wait until the sidebar is fully opened (animation is finished)
+    sidebar.on('opening', function (ev) {
+      // After a short delay (e.g., 500 milliseconds), zoom in
+      setTimeout(function() {
+        // Define the percentage of the screen width that the map should occupy
+        let mapWidthPercentage = getMapWidth() / originalMapWidth * 100;
+        let mapLeft = 100 - mapWidthPercentage;
+        // Using mapLeft, reset the map css left property
+        map.getContainer().style.left = mapLeft + '%';
+        map.getContainer().style.width = mapWidthPercentage + '%';
+      }, 500);
+    });
+*/
+
+
 
   </script>
 
