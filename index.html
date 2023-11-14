@@ -343,6 +343,9 @@
       // touchZoom: true
     });
 
+    // Add a marker at the map center
+    const marker = L.marker([35.6470073,139.7524151]).addTo(map);
+
     // move the zoom control to the top right corner
     map.zoomControl.setPosition('topright');
 
@@ -381,6 +384,58 @@
       // set the map bearing
       map.setBearing(79);
     };
+
+    
+/* Some code that centers the map on a marker when the sidebar is open    
+    // Wait until the sidebar is fully opened (animation is finished)
+    sidebar.on('opening', function (ev) {
+      // After a short delay (e.g., 500 milliseconds), zoom in
+      setTimeout(function() {
+        
+        // Define the sidebar width in pixels
+        const sidebarWidth = document.getElementById('sidebar').offsetWidth;
+
+        // Define the sidebar width as longitudinal decimal degrees at the current zoom level
+        const sidebarWidthDegrees = sidebarWidth / 2.06 ** map.getZoom();
+
+
+        // Get the map center
+        const mapCenter = map.getCenter();
+
+        // Get the map bearing
+        const mapBearing = map.getBearing();
+
+        // Convert bearing to radians
+        const bearingRadians = (mapBearing * Math.PI) / 180;
+
+        // Calculate the offset in longitude and latitude directions
+        const offsetLng = Math.cos(bearingRadians) * sidebarWidthDegrees;
+        const offsetLat = Math.sin(bearingRadians) * sidebarWidthDegrees;
+
+        // Calculate the new map center
+        const newMapCenter = L.latLng(
+          mapCenter.lat + offsetLat,
+          mapCenter.lng + offsetLng
+        );
+
+        // Get the marker latlng
+        const markerLatLng = marker.getLatLng();
+        // Get the marker lat
+        const markerLat = markerLatLng.lat;
+        // Get the marker lng
+        const markerLng = markerLatLng.lng;
+        // Adjust markerLat by subtracting offsetLat
+        const newMarkerLat = markerLat - offsetLat;
+        // Adjust markerLng by subtracting offsetLng
+        const newMarkerLng = markerLng - offsetLng;
+
+        // Set the map center with new marker latlng
+        map.setView([newMarkerLat, newMarkerLng], map.getZoom());
+
+      }, 500);
+    });
+*/
+
     
 /* Some code to shift the map to the right when the sidebar is open 
     // Write a function to get the width of the screen outside of the sidebar
