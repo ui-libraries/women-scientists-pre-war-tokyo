@@ -9,16 +9,16 @@
   <!-- Leaflet CSS -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9/dist/leaflet.css">
   <!-- fonts -->
-    <!-- link to Montserrat font -->
-    <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
-    <!-- link to Orpheus Pro Bold font -->
-    <link href="https://db.onlinewebfonts.com/c/81651a191b7129993b0871c834a19600?family=OrpheusPro-Bold" rel="stylesheet"> 
-    <!-- link to Poppins font -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap" rel="stylesheet"> 
+  <!-- link to Montserrat font -->
+  <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+  <!-- link to Orpheus Pro Bold font -->
+  <link href="https://db.onlinewebfonts.com/c/81651a191b7129993b0871c834a19600?family=OrpheusPro-Bold" rel="stylesheet">
+  <!-- link to Poppins font -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap" rel="stylesheet">
   <!-- for the collapsible sidebar -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" />
   <link rel="stylesheet" href="src/leaflet-sidebar.css" />
-  
+
   <style>
     body {
       margin: 0;
@@ -38,29 +38,33 @@
     .leaflet-control-rotate a,
     .leaflet-control-rotate a:active,
     .leaflet-control-rotate a:focus {
-      background-color: rgba(254,246,217, 1) !important;
+      background-color: rgba(254, 246, 217, 1) !important;
     }
+
     /* Give it a slightly darker background on hover */
     .leaflet-control-rotate a:hover {
       background-color: rgb(239, 232, 205) !important;
       /* Change cursor to grabbing */
       cursor: grabbing !important;
     }
+
     /* Change cursor to grabbing on hover */
     .leaflet-control-rotate-arrow:hover {
       cursor: grabbing !important;
     }
+
     /* Change cursor to grabbing (closed hand) on click */
     .leaflet-control-rotate-arrow:active {
       cursor: grabbing !important;
     }
 
     /* Style the zoom control background */
-    .leaflet-control-zoom a,  
+    .leaflet-control-zoom a,
     .leaflet-control-zoom a:active,
     .leaflet-control-zoom a:focus {
-      background-color: rgba(254,246,217, 1) !important;
+      background-color: rgba(254, 246, 217, 1) !important;
     }
+
     /* Style the zoom control background on hover */
     .leaflet-control-zoom a:hover {
       background-color: rgb(239, 232, 205) !important;
@@ -108,19 +112,20 @@
       max-width: 300px;
     }
 
-      /* Style the tooltip content */
-      .custom-tooltip h4 {
-        font-weight: normal;
-        font-family: "OrpheusPro-Bold";
-        font-size: 12px;
-        margin: 0;
-      }
-      .custom-tooltip h5 {
-        font-weight: normal;
-        font-family: "Montserrat";        
-        font-size: 11px;
-        margin: 0;
-      }
+    /* Style the tooltip content */
+    .custom-tooltip h4 {
+      font-weight: normal;
+      font-family: "OrpheusPro-Bold";
+      font-size: 12px;
+      margin: 0;
+    }
+
+    .custom-tooltip h5 {
+      font-weight: normal;
+      font-family: "Montserrat";
+      font-size: 11px;
+      margin: 0;
+    }
 
     /* Legend styles */
     .legend,
@@ -135,21 +140,21 @@
     }
 
     .overlay-item {
-        position: relative;
-        background-color: white;
-        width: 12px;
-        height: 12px;
-        margin-right: 5px;
-        display: inline-block;
+      position: relative;
+      background-color: white;
+      width: 12px;
+      height: 12px;
+      margin-right: 5px;
+      display: inline-block;
     }
 
     .overlay-item-overlay {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        display: inline-block;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: inline-block;
     }
 
     /* collapsible div css */
@@ -164,7 +169,8 @@
       cursor: pointer;
       font-size: 1rem;
       color: #333;
-      margin-right: 10px; /* Add some spacing between the button and the h2 element */
+      margin-right: 10px;
+      /* Add some spacing between the button and the h2 element */
     }
 
     #collapseButton .icon {
@@ -178,79 +184,83 @@
     }
 
     .svg-container {
-      display: flex; /* Arrange logos horizontally */
+      display: flex;
+      /* Arrange logos horizontally */
       max-height: 120px;
       width: 100%;
       overflow: hidden;
     }
 
     .svg-item {
-      flex: 0 0 auto; /* Prevent logos from growing or shrinking */
-      margin-right: -150px; /* Adjust the margin to control the spacing between logos */
+      flex: 0 0 auto;
+      /* Prevent logos from growing or shrinking */
+      margin-right: -150px;
+      /* Adjust the margin to control the spacing between logos */
       margin-left: -160px;
       margin-bottom: -35px;
     }
 
     /* For maintaining aspect ratio, set either width or height to "auto" */
     .svg-item img {
-      width: 400px; /* Set the desired width for the SVG logo */
-      height: auto; /* Set height to "auto" for maintaining aspect ratio */
+      width: 400px;
+      /* Set the desired width for the SVG logo */
+      height: auto;
+      /* Set height to "auto" for maintaining aspect ratio */
     }
 
     /* custom sidebar css */
-      /* sidebar header */
-      .sidebar-header {
-        width: 100%;
-        font-family: "OrpheusPro-Bold"; 
-      }
+    /* sidebar header */
+    .sidebar-header {
+      width: 100%;
+      font-family: "OrpheusPro-Bold";
+    }
 
-      /* sidebar icon */
-      i {
-        color: rgb(0, 0, 0);
-      }
+    /* sidebar icon */
+    i {
+      color: rgb(0, 0, 0);
+    }
 
-      /* sidebar about heading */
-      .about {
-        color: rgb(0, 0, 0);
-        font-family: "OrpheusPro-Bold"; 
-        font-size: 16px;
-        margin-bottom: 0px;
-        margin-top: 0px;
-        margin-left: 0px;
-      }
+    /* sidebar about heading */
+    .about {
+      color: rgb(0, 0, 0);
+      font-family: "OrpheusPro-Bold";
+      font-size: 16px;
+      margin-bottom: 0px;
+      margin-top: 0px;
+      margin-left: 0px;
+    }
 
-      /* selection heading */
-      .choose {
-        color: rgb(0, 0, 0);
-        font-family: "OrpheusPro-Bold"; 
-        font-size: 16px;
-        margin-bottom: 0px;
-        margin-top: 0px;
-        margin-left: 0px;       
-      }
+    /* selection heading */
+    .choose {
+      color: rgb(0, 0, 0);
+      font-family: "OrpheusPro-Bold";
+      font-size: 16px;
+      margin-bottom: 0px;
+      margin-top: 0px;
+      margin-left: 0px;
+    }
 
-      /* map info */
-      .details {
-        font-family: 'Poppins', sans-serif;
-        font-size: 13px;
-        font-weight: normal;
-        margin-bottom: 0px;
-        margin-top: 0px;
-      }
+    /* map info */
+    .details {
+      font-family: 'Poppins', sans-serif;
+      font-size: 13px;
+      font-weight: normal;
+      margin-bottom: 0px;
+      margin-top: 0px;
+    }
 
-      .instructions {
-        font-family: 'Poppins', sans-serif;
-        font-size: 12px;
-        font-weight: normal;
-        margin-bottom: 0px;
-        margin-top: 0px;        
-      }
+    .instructions {
+      font-family: 'Poppins', sans-serif;
+      font-size: 12px;
+      font-weight: normal;
+      margin-bottom: 0px;
+      margin-top: 0px;
+    }
 
-      .introbreak {
-        display: block;
-        margin-bottom: 1em;
-      }    
-
+    .introbreak {
+      display: block;
+      margin-bottom: 1em;
+    }
   </style>
 </head>
 
@@ -264,7 +274,8 @@
     </div>
     <div class="sidebar-content">
       <div class="sidebar-pane" id="home">
-        <h1 class="sidebar-header">Women Scholars in Pre-War Tokyo<span class="sidebar-close"><i class="fa fa-caret-left"></i></span></h1><br>
+        <h1 class="sidebar-header">Women Scholars in Pre-War Tokyo<span class="sidebar-close"><i
+              class="fa fa-caret-left"></i></span></h1><br>
         <br>
         <div class="header">
           <button id="collapseButton"><span class="icon"><i class="fas fa-chevron-up"></i></span></button>
@@ -272,11 +283,14 @@
         </div>
         <div id="collapsibleContent">
           </b><br>
-          <h3 class="details">Details about the project should go here. These will be added as the project progresses. Check back soon for more information.</h3>
+          <h3 class="details">Details about the project should go here. These will be added as the project progresses.
+            Check back soon for more information.</h3>
           <p style="padding-bottom:0px"></p>
         </div>
         <div id="radio-select">
-          <p><h2 class="choose">Choose from the following options.</h2></p>
+          <p>
+          <h2 class="choose">Choose from the following options.</h2>
+          </p>
           <input type="radio" id="option-one" name="select" value="option-one" checked>
           <label for="option-one">Academic Institutions</label><br>
 
@@ -284,32 +298,38 @@
           <label for="option-two">Scholars</label><br>
         </div>
         <div id="dropdown-instructions">
-          <p><h2 class="choose">Select your topic of interest.</h2></p>
+          <p>
+          <h2 class="choose">Select your topic of interest.</h2>
+          </p>
         </div>
-        <form id="map_parameters" name="map_parameters" action="#" accept-charset="utf-8" class="inlineForm"><select id="chapter-select" class="div-toggle" data-target=".my-info-1"></select></form>
+        <form id="map_parameters" name="map_parameters" action="#" accept-charset="utf-8" class="inlineForm"><select
+            id="chapter-select" class="div-toggle" data-target=".my-info-1"></select></form>
         <!-- Add a button to trigger the handleButtonClick() function -->
         <div id="search-instructions">
-          <p><h2 class="choose">Click the search button or zoom back to Tokyo.</h2></p>
+          <p>
+          <h2 class="choose">Click the search button or zoom back to Tokyo.</h2>
+          </p>
         </div>
         <!-- Wrap the buttons in a container div to control their layout -->
         <div class="button-container">
           <button onclick="handleButtonClick()">Search</button>
           <button onclick="handleZoomOutClick()">Zoom Out</button>
-        </div>        
+        </div>
         <span class='introbreak'></span>
         <div id="sidebar-info" class="my-info-1">
           <div id="content-info" class="contentinfo hide"></div>
-        </div>      
+        </div>
       </div>
     </div>
-  </div>  
+  </div>
 
   <div id="map"></div>
 
   <!-- Leaflet JS -->
   <script src="https://unpkg.com/leaflet@1.9/dist/leaflet-src.js"></script>
   <!-- jQuery -->
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+    integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
   <!-- Leaflet-Rotate -->
   <script src="src/leaflet-rotate-src.js"></script>
   <!-- sidebar -->
@@ -326,7 +346,7 @@
 
     const map = L.map('map', {
       //center: [35.651815, 139.753943],
-      center: [35.6470073,139.7524151],
+      center: [35.6470073, 139.7524151],
       zoom: 13,
       layers: [historic],
       // worldCopyJump: true,
@@ -348,7 +368,7 @@
     });
 
     // Add a marker at the map center
-    const marker = L.marker([35.6470073,139.7524151]).addTo(map);
+    const marker = L.marker([35.6470073, 139.7524151]).addTo(map);
 
     // move the zoom control to the top right corner
     map.zoomControl.setPosition('topright');
@@ -364,7 +384,7 @@
     const collapseButton = document.getElementById('collapseButton');
     const collapsibleContent = document.getElementById('collapsibleContent');
 
-    collapseButton.addEventListener('click', function() {
+    collapseButton.addEventListener('click', function () {
       if (collapsibleContent.style.display === 'none') {
         collapsibleContent.style.display = 'block';
         collapseButton.innerHTML = '<span class="icon"><i class="fas fa-chevron-up"></i></span>';
@@ -378,13 +398,13 @@
     //const mapBounds = [[35.59883, 139.68365],[35.76010, 139.83842]];
 
     // Define the handleButtonClick() function
-    function handleButtonClick() {};
+    function handleButtonClick() { };
 
     // Define the handleZoomOutClick() function
     function handleZoomOutClick() {
       // set the map center
       //map.setView([35.651815, 139.753943], 13);
-      map.setView([35.6470073,139.7524151], 13);
+      map.setView([35.6470073, 139.7524151], 13);
       // set the map bearing
       map.setBearing(79);
     };
@@ -399,12 +419,12 @@
     // use jquery to load GeoJSON data
     $.when(
       $.getJSON('json/tokyo-institutions.geojson'),
-    ).done(function(inst){
+    ).done(function (inst) {
 
       // create a layer for the universities
       const universities = L.geoJson(inst, {
         // style the layer
-        style: function(feature) {
+        style: function (feature) {
           return {
             color: '#0072CE',
             weight: 1,
@@ -414,19 +434,7 @@
           };
         },
         // add a popup to the layer
-        onEachFeature: function(feature, layer) {
-          // add the institution name to the institutionList array
-          institutionList.push(feature.properties.Cont_Name);
-          // sort the institutionList array alphabetically
-          institutionList.sort();
-          // define the chapter-select dropdown content using each institution name from the institutionList array
-          const eachInstitution = institutionList.filter((v, i, a) => a.indexOf(v) === i);
-          let tmpHTML = '<select class="custom-select"><option value="0">Select a University</option>';
-          for (let i = 0; i < eachInstitution.length; i++) {
-            tmpHTML += '<option value="' + eachInstitution[i] + '">' + eachInstitution[i] + '</option>';
-          }
-          tmpHTML += '</select>';
-          document.getElementById('chapter-select').innerHTML = tmpHTML;
+        onEachFeature: function (feature, layer) {
 
           layer.bindPopup('<h4>' + feature.properties.Cont_Name + '<br><i>' + feature.properties.Hist_Name + '</i></h4><hr><h5>' + feature.properties.Description + '</h5>', {
             sticky: true,
@@ -436,7 +444,7 @@
           });
           // on hover, highlight the feature and open the popup
           layer.on({
-            mouseover: function(e) {
+            mouseover: function (e) {
               this.openPopup();
               this.setStyle({
                 color: '#0072CE',
@@ -446,7 +454,7 @@
                 fillOpacity: 0.75,
               });
             },
-            mouseout: function(e) {
+            mouseout: function (e) {
               //this.closePopup();
               this.setStyle({
                 color: '#0072CE',
@@ -458,16 +466,42 @@
             },
           });
         },
-      }).addTo(map);
+      });
+
+      // If the option-one radio button is selected, add the universities layer to the map
+      if (getSelectedRadioValue() == "option-one") {
+        // clear the institutionList array
+        institutionList.length = 0;
+        universities.addTo(map);
+        universities.eachLayer(function (layer) {
+          // add the institution name to the institutionList array
+          institutionList.push(layer.feature.properties.Cont_Name);
+          // sort the institutionList array alphabetically
+          institutionList.sort();
+          // define the chapter-select dropdown content using each institution name from the institutionList array
+          const eachInstitution = institutionList.filter((v, i, a) => a.indexOf(v) === i);
+          let tmpHTML = '<select class="custom-select"><option value="0">Select a University</option>';
+          for (let i = 0; i < eachInstitution.length; i++) {
+            tmpHTML += '<option value="' + eachInstitution[i] + '">' + eachInstitution[i] + '</option>';
+          }
+          tmpHTML += '</select>';
+          document.getElementById('chapter-select').innerHTML = tmpHTML;
+        });
+      } // Otherwise, remove the universities layer from the map
+      else {
+        map.removeLayer(universities);
+        // clear the dropdown
+        document.getElementById('chapter-select').innerHTML = '';
+      };
 
       // On radio button change...
-      $('input[type=radio][name=select]').change(function() {
+      $('input[type=radio][name=select]').change(function () {
         // If the option-one radio button is selected, add the universities layer to the map
         if (document.getElementById('option-one').checked) {
           // clear the institutionList array
           institutionList.length = 0;
           universities.addTo(map);
-          universities.eachLayer(function(layer) {
+          universities.eachLayer(function (layer) {
             // add the institution name to the institutionList array
             institutionList.push(layer.feature.properties.Cont_Name);
             // sort the institutionList array alphabetically
@@ -479,7 +513,7 @@
               tmpHTML += '<option value="' + eachInstitution[i] + '">' + eachInstitution[i] + '</option>';
             }
             tmpHTML += '</select>';
-            document.getElementById('chapter-select').innerHTML = tmpHTML;            
+            document.getElementById('chapter-select').innerHTML = tmpHTML;
           });
         } // Otherwise, remove the universities layer from the map
         else {
@@ -491,94 +525,106 @@
 
     });
 
-    
-/* Some code that centers the map on a marker when the sidebar is open    
-    // Wait until the sidebar is fully opened (animation is finished)
-    sidebar.on('opening', function (ev) {
-      // After a short delay (e.g., 500 milliseconds), zoom in
-      setTimeout(function() {
-        
-        // Define the sidebar width in pixels
-        const sidebarWidth = document.getElementById('sidebar').offsetWidth;
-
-        // Define the sidebar width as longitudinal decimal degrees at the current zoom level
-        const sidebarWidthDegrees = sidebarWidth / 2.06 ** map.getZoom();
-
-
-        // Get the map center
-        const mapCenter = map.getCenter();
-
-        // Get the map bearing
-        const mapBearing = map.getBearing();
-
-        // Convert bearing to radians
-        const bearingRadians = (mapBearing * Math.PI) / 180;
-
-        // Calculate the offset in longitude and latitude directions
-        const offsetLng = Math.cos(bearingRadians) * sidebarWidthDegrees;
-        const offsetLat = Math.sin(bearingRadians) * sidebarWidthDegrees;
-
-        // Calculate the new map center
-        const newMapCenter = L.latLng(
-          mapCenter.lat + offsetLat,
-          mapCenter.lng + offsetLng
-        );
-
-        // Get the marker latlng
-        const markerLatLng = marker.getLatLng();
-        // Get the marker lat
-        const markerLat = markerLatLng.lat;
-        // Get the marker lng
-        const markerLng = markerLatLng.lng;
-        // Adjust markerLat by subtracting offsetLat
-        const newMarkerLat = markerLat - offsetLat;
-        // Adjust markerLng by subtracting offsetLng
-        const newMarkerLng = markerLng - offsetLng;
-
-        // Set the map center with new marker latlng
-        map.setView([newMarkerLat, newMarkerLng], map.getZoom());
-
-      }, 500);
-    });
-*/
-
-    
-/* Some code to shift the map to the right when the sidebar is open 
-    // Write a function to get the width of the screen outside of the sidebar
-    function getMapWidth() {
-      const sidebarWidth = document.getElementById('sidebar').offsetWidth;
-      const mapWidth = window.innerWidth - sidebarWidth;
-      return mapWidth;
+    // Function to get the selected radio value
+    function getSelectedRadioValue() {
+      const radioButtons = document.getElementsByName('select');
+      let selectedRadioValue = null;
+      radioButtons.forEach(radio => {
+        if (radio.checked) {
+          selectedRadioValue = radio.value;
+        }
+      });
+      return selectedRadioValue;
     };
 
-    const originalMapWidth = getMapWidth();
 
-    // Wait until the sidebar is fully closed (animation is finished)
-    sidebar.on('closing', function (ev) {
-      // After a short delay (e.g., 500 milliseconds), zoom in
-      setTimeout(function() {
-        // Define the percentage of the screen width that the map should occupy
-        let mapWidthPercentage = getMapWidth() / originalMapWidth * 100;
-        let mapLeft = 100 - mapWidthPercentage;
-        // Using mapLeft, reset the map css left property
-        map.getContainer().style.left = mapLeft + '%';
-        map.getContainer().style.width = mapWidthPercentage + '%';
-      }, 500);
-    });
+    /* Some code that centers the map on a marker when the sidebar is open    
+        // Wait until the sidebar is fully opened (animation is finished)
+        sidebar.on('opening', function (ev) {
+          // After a short delay (e.g., 500 milliseconds), zoom in
+          setTimeout(function() {
+            
+            // Define the sidebar width in pixels
+            const sidebarWidth = document.getElementById('sidebar').offsetWidth;
+    
+            // Define the sidebar width as longitudinal decimal degrees at the current zoom level
+            const sidebarWidthDegrees = sidebarWidth / 2.06 ** map.getZoom();
+    
+    
+            // Get the map center
+            const mapCenter = map.getCenter();
+    
+            // Get the map bearing
+            const mapBearing = map.getBearing();
+    
+            // Convert bearing to radians
+            const bearingRadians = (mapBearing * Math.PI) / 180;
+    
+            // Calculate the offset in longitude and latitude directions
+            const offsetLng = Math.cos(bearingRadians) * sidebarWidthDegrees;
+            const offsetLat = Math.sin(bearingRadians) * sidebarWidthDegrees;
+    
+            // Calculate the new map center
+            const newMapCenter = L.latLng(
+              mapCenter.lat + offsetLat,
+              mapCenter.lng + offsetLng
+            );
+    
+            // Get the marker latlng
+            const markerLatLng = marker.getLatLng();
+            // Get the marker lat
+            const markerLat = markerLatLng.lat;
+            // Get the marker lng
+            const markerLng = markerLatLng.lng;
+            // Adjust markerLat by subtracting offsetLat
+            const newMarkerLat = markerLat - offsetLat;
+            // Adjust markerLng by subtracting offsetLng
+            const newMarkerLng = markerLng - offsetLng;
+    
+            // Set the map center with new marker latlng
+            map.setView([newMarkerLat, newMarkerLng], map.getZoom());
+    
+          }, 500);
+        });
+    */
 
-    // Wait until the sidebar is fully opened (animation is finished)
-    sidebar.on('opening', function (ev) {
-      // After a short delay (e.g., 500 milliseconds), zoom in
-      setTimeout(function() {
-        // Define the percentage of the screen width that the map should occupy
-        let mapWidthPercentage = getMapWidth() / originalMapWidth * 100;
-        let mapLeft = 100 - mapWidthPercentage;
-        // Using mapLeft, reset the map css left property
-        map.getContainer().style.left = mapLeft + '%';
-        map.getContainer().style.width = mapWidthPercentage + '%';
-      }, 500);
-    });
-*/
+
+    /* Some code to shift the map to the right when the sidebar is open 
+        // Write a function to get the width of the screen outside of the sidebar
+        function getMapWidth() {
+          const sidebarWidth = document.getElementById('sidebar').offsetWidth;
+          const mapWidth = window.innerWidth - sidebarWidth;
+          return mapWidth;
+        };
+    
+        const originalMapWidth = getMapWidth();
+    
+        // Wait until the sidebar is fully closed (animation is finished)
+        sidebar.on('closing', function (ev) {
+          // After a short delay (e.g., 500 milliseconds), zoom in
+          setTimeout(function() {
+            // Define the percentage of the screen width that the map should occupy
+            let mapWidthPercentage = getMapWidth() / originalMapWidth * 100;
+            let mapLeft = 100 - mapWidthPercentage;
+            // Using mapLeft, reset the map css left property
+            map.getContainer().style.left = mapLeft + '%';
+            map.getContainer().style.width = mapWidthPercentage + '%';
+          }, 500);
+        });
+    
+        // Wait until the sidebar is fully opened (animation is finished)
+        sidebar.on('opening', function (ev) {
+          // After a short delay (e.g., 500 milliseconds), zoom in
+          setTimeout(function() {
+            // Define the percentage of the screen width that the map should occupy
+            let mapWidthPercentage = getMapWidth() / originalMapWidth * 100;
+            let mapLeft = 100 - mapWidthPercentage;
+            // Using mapLeft, reset the map css left property
+            map.getContainer().style.left = mapLeft + '%';
+            map.getContainer().style.width = mapWidthPercentage + '%';
+          }, 500);
+        });
+    */
 
 
 
