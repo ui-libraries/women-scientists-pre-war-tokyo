@@ -102,6 +102,26 @@
       margin: 4px;
     }
 
+    /* Tooltip styling */
+    .custom-tooltip {
+      /* set the maximum width */
+      max-width: 300px;
+    }
+
+      /* Style the tooltip content */
+      .custom-tooltip h4 {
+        font-weight: normal;
+        font-family: "OrpheusPro-Bold";
+        font-size: 12px;
+        margin: 0;
+      }
+      .custom-tooltip h5 {
+        font-weight: normal;
+        font-family: "Montserrat";        
+        font-size: 11px;
+        margin: 0;
+      }
+
     /* Legend styles */
     .legend,
     .caseLegend {
@@ -258,13 +278,10 @@
         <div id="radio-select">
           <p><h2 class="choose">Choose from the following options.</h2></p>
           <input type="radio" id="option-one" name="select" value="option-one" checked>
-          <label for="option-one">Option One</label><br>
+          <label for="option-one">Academic Institutions</label><br>
 
           <input type="radio" id="option-two" name="select" value="option-two">
-          <label for="option-two">Option Two</label><br>
-          
-          <input type="radio" id="option-three" name="select" value="option-three">
-          <label for="option-three">Option Three</label><br>  
+          <label for="option-two">Scholars</label><br>
         </div>
         <div id="dropdown-instructions">
           <p><h2 class="choose">Select your topic of interest.</h2></p>
@@ -291,6 +308,8 @@
 
   <!-- Leaflet JS -->
   <script src="https://unpkg.com/leaflet@1.9/dist/leaflet-src.js"></script>
+  <!-- jQuery -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
   <!-- Leaflet-Rotate -->
   <script src="src/leaflet-rotate-src.js"></script>
   <!-- sidebar -->
@@ -299,25 +318,10 @@
 
   <script>
 
-    const osm = L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      maxZoom: 24,
-      maxNativeZoom: 19,
-      attribution: '&copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-      // noWrap: true
-    });
-
-    const mierune = L.tileLayer('https://tile.mierune.co.jp/mierune_mono/{z}/{x}/{y}.png', {
-      minZoom: 0,
-      maxZoom: 18,
-      attribution: '&copy; <a href="https://mierune.co.jp/">mierune</a>',
-      // noWrap: true
-    });
-
     const historic = L.tileLayer('./tokyo-map-tiles/{z}/{x}/{y}.png', {
       tms: 1,
       minZoom: 10,
       maxZoom: 16,
-      // noWrap: true
     });
 
     const map = L.map('map', {
@@ -384,6 +388,108 @@
       // set the map bearing
       map.setBearing(79);
     };
+
+    // define an empty array to hold the sidebar selected content
+    const chapterContent = [];
+    // define an empty array to hold all institution names
+    const institutionList = [];
+    // define sidebar info
+    const info = document.getElementById("content-info");
+
+    // use jquery to load GeoJSON data
+    $.when(
+      $.getJSON('json/tokyo-institutions.geojson'),
+    ).done(function(inst){
+
+      // create a layer for the universities
+      const universities = L.geoJson(inst, {
+        // style the layer
+        style: function(feature) {
+          return {
+            color: '#0072CE',
+            weight: 1,
+            opacity: 1,
+            fillColor: '#0072CE',
+            fillOpacity: 0.45,
+          };
+        },
+        // add a popup to the layer
+        onEachFeature: function(feature, layer) {
+          // add the institution name to the institutionList array
+          institutionList.push(feature.properties.Cont_Name);
+          // sort the institutionList array alphabetically
+          institutionList.sort();
+          // define the chapter-select dropdown content using each institution name from the institutionList array
+          const eachInstitution = institutionList.filter((v, i, a) => a.indexOf(v) === i);
+          let tmpHTML = '<select class="custom-select"><option value="0">Select a University</option>';
+          for (let i = 0; i < eachInstitution.length; i++) {
+            tmpHTML += '<option value="' + eachInstitution[i] + '">' + eachInstitution[i] + '</option>';
+          }
+          tmpHTML += '</select>';
+          document.getElementById('chapter-select').innerHTML = tmpHTML;
+
+          layer.bindPopup('<h4>' + feature.properties.Cont_Name + '<br><i>' + feature.properties.Hist_Name + '</i></h4><hr><h5>' + feature.properties.Description + '</h5>', {
+            sticky: true,
+            direction: 'top',
+            opacity: 0.9,
+            className: 'custom-tooltip',
+          });
+          // on hover, highlight the feature and open the popup
+          layer.on({
+            mouseover: function(e) {
+              this.openPopup();
+              this.setStyle({
+                color: '#0072CE',
+                weight: 2,
+                opacity: 1,
+                fillColor: '#0072CE',
+                fillOpacity: 0.75,
+              });
+            },
+            mouseout: function(e) {
+              //this.closePopup();
+              this.setStyle({
+                color: '#0072CE',
+                weight: 1,
+                opacity: 1,
+                fillColor: '#0072CE',
+                fillOpacity: 0.45,
+              });
+            },
+          });
+        },
+      }).addTo(map);
+
+      // On radio button change...
+      $('input[type=radio][name=select]').change(function() {
+        // If the option-one radio button is selected, add the universities layer to the map
+        if (document.getElementById('option-one').checked) {
+          // clear the institutionList array
+          institutionList.length = 0;
+          universities.addTo(map);
+          universities.eachLayer(function(layer) {
+            // add the institution name to the institutionList array
+            institutionList.push(layer.feature.properties.Cont_Name);
+            // sort the institutionList array alphabetically
+            institutionList.sort();
+            // define the chapter-select dropdown content using each institution name from the institutionList array
+            const eachInstitution = institutionList.filter((v, i, a) => a.indexOf(v) === i);
+            let tmpHTML = '<select class="custom-select"><option value="0">Select a University</option>';
+            for (let i = 0; i < eachInstitution.length; i++) {
+              tmpHTML += '<option value="' + eachInstitution[i] + '">' + eachInstitution[i] + '</option>';
+            }
+            tmpHTML += '</select>';
+            document.getElementById('chapter-select').innerHTML = tmpHTML;            
+          });
+        } // Otherwise, remove the universities layer from the map
+        else {
+          map.removeLayer(universities);
+          // clear the dropdown
+          document.getElementById('chapter-select').innerHTML = '';
+        };
+      });
+
+    });
 
     
 /* Some code that centers the map on a marker when the sidebar is open    
