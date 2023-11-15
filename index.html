@@ -416,13 +416,15 @@
     // define sidebar info
     const info = document.getElementById("content-info");
 
+    let universities; // Declare universities outside of the $.when().done() block
+
     // use jquery to load GeoJSON data
     $.when(
       $.getJSON('json/tokyo-institutions.geojson'),
     ).done(function (inst) {
 
       // create a layer for the universities
-      const universities = L.geoJson(inst, {
+      universities = L.geoJson(inst, {
         // style the layer
         style: function (feature) {
           return {
@@ -536,6 +538,71 @@
       });
       return selectedRadioValue;
     };
+
+    // Function to get the selected value from the dropdown
+    function getSelectedDropdownValue() {
+      const dropdown = document.getElementById('chapter-select');
+      const selectedDropdownValue = dropdown.value;
+      return selectedDropdownValue;
+    };
+
+    // Function to get both the radio selection and the dropdown selection
+    function getSelections() {
+        const radioSelection = getSelectedRadioValue();
+        const dropdownSelection = getSelectedDropdownValue();
+        // You can use the values here, or return them as an object or an array
+        // For this example, I will return an object
+        return {
+            radio: radioSelection,
+            dropdown: dropdownSelection
+        };
+    };
+    
+    // Define the handleButtonClick() function
+    function handleButtonClick() {
+      const selections = getSelections();
+      const radioSelection = selections.radio;
+      const dropdownSelection = selections.dropdown;   
+      
+      console.log(radioSelection);
+      console.log(dropdownSelection);
+
+      // If the radio selection is "option-one"
+      if (radioSelection == "option-one") {
+        // iterate through the universities layer
+        universities.eachLayer(function (layer) {
+          // if the dropdown selection matches the institution name
+          if (dropdownSelection == layer.feature.properties.Cont_Name) {
+            // Get the bounds of the polygon
+            const bounds = layer.getBounds();
+            // Define the sidebar width in pixels
+            const sidebarWidth = document.getElementById('sidebar').offsetWidth;
+            // Define the sidebar width as longitudinal decimal degrees at a zoom level of 16
+            const sidebarWidthDegrees = sidebarWidth / 2.06 ** 16;
+            // Convert bearing of 79 to radians
+            const bearingRadians = (79 * Math.PI) / 180;
+            // Calculate the offset in longitude and latitude directions
+            const offsetLng = Math.cos(bearingRadians) * sidebarWidthDegrees;
+            const offsetLat = Math.sin(bearingRadians) * sidebarWidthDegrees;
+            // Adjust the bounds with the offsetLng and offsetLat
+            bounds._northEast.lat = bounds._northEast.lat - offsetLat;
+            bounds._northEast.lng = bounds._northEast.lng - offsetLng;
+            bounds._southWest.lat = bounds._southWest.lat - offsetLat;
+            bounds._southWest.lng = bounds._southWest.lng - offsetLng;
+            // Fit the map to the bounds of the polygon
+            map.fitBounds(bounds);
+            // Set the map bearing to 79
+            map.setBearing(79);
+            // Hover over the layer
+            layer.fireEvent('mouseover');
+          }
+        });
+      } else {
+
+      }
+    }; 
+    
+
 
 
     /* Some code that centers the map on a marker when the sidebar is open    
