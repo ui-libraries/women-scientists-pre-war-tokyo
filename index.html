@@ -563,9 +563,6 @@
       const selections = getSelections();
       const radioSelection = selections.radio;
       const dropdownSelection = selections.dropdown;   
-      
-      console.log(radioSelection);
-      console.log(dropdownSelection);
 
       // If the radio selection is "option-one"
       if (radioSelection == "option-one") {
@@ -574,7 +571,7 @@
           // if the dropdown selection matches the institution name
           if (dropdownSelection == layer.feature.properties.Cont_Name) {
             // Get the bounds of the polygon
-            const bounds = layer.getBounds();
+            let bounds = layer.getBounds();
             // Define the sidebar width in pixels
             const sidebarWidth = document.getElementById('sidebar').offsetWidth;
             // Define the sidebar width as longitudinal decimal degrees at a zoom level of 16
@@ -584,13 +581,13 @@
             // Calculate the offset in longitude and latitude directions
             const offsetLng = Math.cos(bearingRadians) * sidebarWidthDegrees;
             const offsetLat = Math.sin(bearingRadians) * sidebarWidthDegrees;
-            // Adjust the bounds with the offsetLng and offsetLat
-            bounds._northEast.lat = bounds._northEast.lat - offsetLat;
-            bounds._northEast.lng = bounds._northEast.lng - offsetLng;
-            bounds._southWest.lat = bounds._southWest.lat - offsetLat;
-            bounds._southWest.lng = bounds._southWest.lng - offsetLng;
-            // Fit the map to the bounds of the polygon
-            map.fitBounds(bounds);
+            // Define new bounds with the offsets
+            let neLat = bounds._northEast.lat - offsetLat;
+            let neLng = bounds._northEast.lng - offsetLng;
+            let swLat = bounds._southWest.lat - offsetLat;
+            let swLng = bounds._southWest.lng - offsetLng;
+            // Use these bounds to fit the map
+            map.fitBounds([[neLat, neLng], [swLat, swLng]]);         
             // Set the map bearing to 79
             map.setBearing(79);
             // open the popup
