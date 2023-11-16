@@ -127,6 +127,21 @@
       margin: 0;
     }
 
+    /* Style the chapter content */
+    h6 {
+      font-weight: normal;
+      font-family: "OrpheusPro-Bold";
+      font-size: 15px;
+      margin: 0;
+    }
+
+    h7 {
+      font-weight: normal;
+      font-family: "Poppins", sans-serif;
+      font-size: 12px;
+      margin: 0;
+    }
+
     /* Legend styles */
     .legend,
     .caseLegend {
@@ -294,7 +309,7 @@
           <label for="option-one">Academic Institutions</label><br>
 
           <input type="radio" id="option-two" name="select" value="option-two">
-          <label for="option-two">Scholars</label><br>
+          <label for="option-two">Scientists</label><br>
         </div>
         <div id="dropdown-instructions">
           <p>
@@ -556,6 +571,12 @@
     
     // Define the handleButtonClick() function
     function handleButtonClick() {
+      
+      // clear the chapterContent array
+      chapterContent.length = 0;
+      info.innerHTML = chapterContent.join('');
+
+      // Get the selections
       const selections = getSelections();
       const radioSelection = selections.radio;
       const dropdownSelection = selections.dropdown;   
@@ -588,6 +609,12 @@
             map.setBearing(79);
             // open the popup
             layer.openPopup();
+
+            // Build out the chapterContent array
+            chapterContent.push('<h6>' + layer.feature.properties.Cont_Name + '<br><i>' + layer.feature.properties.Hist_Name + '</i></h6><hr><h7>' + layer.feature.properties.Description + '<br><br><b>Scientists:</b><br>' + layer.feature.properties.Scientists + '</h7>');
+            // Join the chapterContent array, and set it as the innerHTML of the info div
+            info.innerHTML = chapterContent;
+
           }
         });
       } else {
