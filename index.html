@@ -424,15 +424,19 @@
     const chapterContent = [];
     // define an empty array to hold all institution names
     const institutionList = [];
+    // define an empty array to hold all scientist names
+    const scientistList = [];
     // define sidebar info
     const info = document.getElementById("content-info");
 
     let universities; // Declare universities outside of the $.when().done() block
+    let biographies; // Declare biographies outside of the $.when().done() block
 
     // use jquery to load GeoJSON data
     $.when(
       $.getJSON('json/tokyo-institutions.geojson'),
-    ).done(function (inst) {
+      $.getJSON('json/biographies.geojson')
+    ).done(function (inst, bios) {
 
       // create a layer for the universities
       universities = L.geoJson(inst, {
@@ -481,11 +485,68 @@
         },
       });
 
+      // Create a marker layer for the bios
+      biographies = L.geoJson(bios, {
+        // assign markers to each point
+        pointToLayer: function (feature, latlng) {
+          return L.marker(latlng, {
+            icon: L.icon({
+              iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png',
+              shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+              iconSize: [25, 41],
+              iconAnchor: [12, 41],
+              popupAnchor: [1, -34],
+              shadowSize: [41, 41]
+            })
+          });
+        },
+        onEachFeature: function(feature, layer) {
+          // on mouseover
+          layer.on('mouseover', function (e) {
+            // highlight the feature
+            this.setIcon(L.icon({
+              iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-gold.png',
+              shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+              iconSize: [25, 41],
+              iconAnchor: [12, 41],
+              popupAnchor: [1, -34],
+              shadowSize: [41, 41]
+            }));
+          });
+          // on mouseout
+          layer.on('mouseout', function (e) {
+            // reset the icon
+            this.setIcon(L.icon({
+              iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png',
+              shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+              iconSize: [25, 41],
+              iconAnchor: [12, 41],
+              popupAnchor: [1, -34],
+              shadowSize: [41, 41]
+            }));
+          });
+          layer.bindPopup('<h4>' + feature.properties.Name + '<br>' + feature.properties.Cont_Name + '<br><i>' + feature.properties.Hist_Name + '</i></h4><hr><h5>' + feature.properties.Bio + '</h5>', {
+            sticky: true,
+            direction: 'top',
+            opacity: 0.9,
+            className: 'custom-tooltip'
+          });
+        }
+      });
+
       // If the option-one radio button is selected, add the universities layer to the map
       if (getSelectedRadioValue() == "option-one") {
+        // remove the bios layer from the map
+        map.removeLayer(biographies);
+        // clear the dropdown
+        document.getElementById('chapter-select').innerHTML = '';
         // clear the institutionList array
         institutionList.length = 0;
+        // clear the scientistList array
+        scientistList.length = 0;
+        // add the universities layer to the map
         universities.addTo(map);
+        // iterate through the universities layer
         universities.eachLayer(function (layer) {
           // add the institution name to the institutionList array
           institutionList.push(layer.feature.properties.Cont_Name);
@@ -502,18 +563,48 @@
         });
       } // Otherwise, remove the universities layer from the map
       else {
+        // remove the universities layer from the map
         map.removeLayer(universities);
         // clear the dropdown
         document.getElementById('chapter-select').innerHTML = '';
+        // clear the institutionList array
+        institutionList.length = 0;
+        // clear the scientistList array
+        scientistList.length = 0;        
+        // add the bios layer to the map
+        biographies.addTo(map);
+        // iterate through the bios layer
+        biographies.eachLayer(function (layer) {
+          // add the scientist name to the scientistList array
+          scientistList.push(layer.feature.properties.Name);
+          // sort the scientistList array alphabetically
+          scientistList.sort();
+          // define the chapter-select dropdown content using each scientist name from the scientistList array
+          const eachScientist = scientistList.filter((v, i, a) => a.indexOf(v) === i);
+          let tmpHTML = '<select class="custom-select"><option value="0">Select a Scientist</option>';
+          for (let i = 0; i < eachScientist.length; i++) {
+            tmpHTML += '<option value="' + eachScientist[i] + '">' + eachScientist[i] + '</option>';
+          }
+          tmpHTML += '</select>';
+          document.getElementById('chapter-select').innerHTML = tmpHTML;
+        });
       };
 
       // On radio button change...
       $('input[type=radio][name=select]').change(function () {
         // If the option-one radio button is selected, add the universities layer to the map
         if (document.getElementById('option-one').checked) {
+          // remove the bios layer from the map
+          map.removeLayer(biographies);
+          // clear the dropdown
+          document.getElementById('chapter-select').innerHTML = '';
           // clear the institutionList array
           institutionList.length = 0;
+          // clear the scientistList array
+          scientistList.length = 0;
+          // add the universities layer to the map
           universities.addTo(map);
+          // iterate through the universities layer
           universities.eachLayer(function (layer) {
             // add the institution name to the institutionList array
             institutionList.push(layer.feature.properties.Cont_Name);
@@ -530,9 +621,31 @@
           });
         } // Otherwise, remove the universities layer from the map
         else {
+          // remove the universities layer from the map
           map.removeLayer(universities);
           // clear the dropdown
           document.getElementById('chapter-select').innerHTML = '';
+          // clear the institutionList array
+          institutionList.length = 0;
+          // clear the scientistList array
+          scientistList.length = 0;
+          // add the bios layer to the map
+          biographies.addTo(map);
+          // iterate through the bios layer
+          biographies.eachLayer(function (layer) {
+            // add the scientist name to the scientistList array
+            scientistList.push(layer.feature.properties.Name);
+            // sort the scientistList array alphabetically
+            scientistList.sort();
+            // define the chapter-select dropdown content using each scientist name from the scientistList array
+            const eachScientist = scientistList.filter((v, i, a) => a.indexOf(v) === i);
+            let tmpHTML = '<select class="custom-select"><option value="0">Select a Scientist</option>';
+            for (let i = 0; i < eachScientist.length; i++) {
+              tmpHTML += '<option value="' + eachScientist[i] + '">' + eachScientist[i] + '</option>';
+            }
+            tmpHTML += '</select>';
+            document.getElementById('chapter-select').innerHTML = tmpHTML;
+          });
         };
       });
 
@@ -614,11 +727,44 @@
             chapterContent.push('<h6>' + layer.feature.properties.Cont_Name + '<br><i>' + layer.feature.properties.Hist_Name + '</i></h6><hr><h7>' + layer.feature.properties.Description + '<br><br><b>Scientists:</b><br>' + layer.feature.properties.Scientists + '</h7>');
             // Join the chapterContent array, and set it as the innerHTML of the info div
             info.innerHTML = chapterContent;
-
           }
         });
       } else {
+        // iterate through the bios layer
+        biographies.eachLayer(function (layer) {
+          // if the dropdown selection matches the scientist name
+          if (dropdownSelection == layer.feature.properties.Name) {
 
+            // Build out the chapterContent array
+            var content = '<h6>' + layer.feature.properties.Name + '<br><i>';
+
+            // Collect unique Cont_Names for the selected Name
+            var contNames = [];
+
+            biographies.eachLayer(function (subLayer) {
+              if (layer.feature.properties.Name === subLayer.feature.properties.Name) {
+                // push the Cont_Name to the contNames array
+                contNames.push(subLayer.feature.properties.Cont_Name);
+              }
+            });
+            
+            // Add each unique Cont_Name under Name
+            content += contNames.join('<br>') + '</i></h6><hr>';
+            
+            // Add Bio (assuming it's the same for all Cont_Names under the same Name)
+            content += '<h7>' + layer.feature.properties.Bio + '</h7>';
+
+            // Set the innerHTML of the info div
+            info.innerHTML = content;
+    
+            // Set riseOnHover to true to bring the matching marker to the front when hovered
+            layer.options.riseOnHover = true;
+
+            // Open the popup for the first matching layer
+            layer.openPopup();
+            
+          }
+        });
       }
     }; 
     
