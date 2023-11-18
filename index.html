@@ -431,6 +431,8 @@
 
     let universities; // Declare universities outside of the $.when().done() block
     let biographies; // Declare biographies outside of the $.when().done() block
+    // Declare a layer group to hold markers
+    let markers = L.layerGroup();
 
     // use jquery to load GeoJSON data
     $.when(
@@ -503,6 +505,8 @@
         onEachFeature: function(feature, layer) {
           // on mouseover
           layer.on('mouseover', function (e) {
+            // open the popup
+            this.openPopup();
             // highlight the feature
             this.setIcon(L.icon({
               iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-gold.png',
@@ -538,6 +542,8 @@
       if (getSelectedRadioValue() == "option-one") {
         // remove the bios layer from the map
         map.removeLayer(biographies);
+        // remove the markers layer group from the map
+        map.removeLayer(markers);
         // clear the dropdown
         document.getElementById('chapter-select').innerHTML = '';
         // clear the institutionList array
@@ -553,7 +559,7 @@
           // sort the institutionList array alphabetically
           institutionList.sort();
           // define the chapter-select dropdown content using each institution name from the institutionList array
-          const eachInstitution = institutionList.filter((v, i, a) => a.indexOf(v) === i);
+          let eachInstitution = institutionList.filter((v, i, a) => a.indexOf(v) === i);
           let tmpHTML = '<select class="custom-select"><option value="0">Select a University</option>';
           for (let i = 0; i < eachInstitution.length; i++) {
             tmpHTML += '<option value="' + eachInstitution[i] + '">' + eachInstitution[i] + '</option>';
@@ -565,6 +571,8 @@
       else {
         // remove the universities layer from the map
         map.removeLayer(universities);
+        // remove the markers layer group from the map
+        map.removeLayer(markers);
         // clear the dropdown
         document.getElementById('chapter-select').innerHTML = '';
         // clear the institutionList array
@@ -580,7 +588,7 @@
           // sort the scientistList array alphabetically
           scientistList.sort();
           // define the chapter-select dropdown content using each scientist name from the scientistList array
-          const eachScientist = scientistList.filter((v, i, a) => a.indexOf(v) === i);
+          let eachScientist = scientistList.filter((v, i, a) => a.indexOf(v) === i);
           let tmpHTML = '<select class="custom-select"><option value="0">Select a Scientist</option>';
           for (let i = 0; i < eachScientist.length; i++) {
             tmpHTML += '<option value="' + eachScientist[i] + '">' + eachScientist[i] + '</option>';
@@ -592,10 +600,15 @@
 
       // On radio button change...
       $('input[type=radio][name=select]').change(function () {
+        // clear the chapterContent array
+        chapterContent.length = 0;
+        info.innerHTML = chapterContent.join('');
         // If the option-one radio button is selected, add the universities layer to the map
         if (document.getElementById('option-one').checked) {
           // remove the bios layer from the map
           map.removeLayer(biographies);
+          // remove the markers layer group from the map
+          map.removeLayer(markers);
           // clear the dropdown
           document.getElementById('chapter-select').innerHTML = '';
           // clear the institutionList array
@@ -611,7 +624,7 @@
             // sort the institutionList array alphabetically
             institutionList.sort();
             // define the chapter-select dropdown content using each institution name from the institutionList array
-            const eachInstitution = institutionList.filter((v, i, a) => a.indexOf(v) === i);
+            let eachInstitution = institutionList.filter((v, i, a) => a.indexOf(v) === i);
             let tmpHTML = '<select class="custom-select"><option value="0">Select a University</option>';
             for (let i = 0; i < eachInstitution.length; i++) {
               tmpHTML += '<option value="' + eachInstitution[i] + '">' + eachInstitution[i] + '</option>';
@@ -623,6 +636,8 @@
         else {
           // remove the universities layer from the map
           map.removeLayer(universities);
+          // remove the markers layer group from the map
+          map.removeLayer(markers);
           // clear the dropdown
           document.getElementById('chapter-select').innerHTML = '';
           // clear the institutionList array
@@ -638,7 +653,7 @@
             // sort the scientistList array alphabetically
             scientistList.sort();
             // define the chapter-select dropdown content using each scientist name from the scientistList array
-            const eachScientist = scientistList.filter((v, i, a) => a.indexOf(v) === i);
+            let eachScientist = scientistList.filter((v, i, a) => a.indexOf(v) === i);
             let tmpHTML = '<select class="custom-select"><option value="0">Select a Scientist</option>';
             for (let i = 0; i < eachScientist.length; i++) {
               tmpHTML += '<option value="' + eachScientist[i] + '">' + eachScientist[i] + '</option>';
@@ -703,14 +718,14 @@
             // Get the bounds of the polygon
             let bounds = layer.getBounds();
             // Define the sidebar width in pixels
-            const sidebarWidth = document.getElementById('sidebar').offsetWidth;
+            let sidebarWidth = document.getElementById('sidebar').offsetWidth;
             // Define the sidebar width as longitudinal decimal degrees at a zoom level of 16
-            const sidebarWidthDegrees = sidebarWidth / 2.06 ** 16;
+            let sidebarWidthDegrees = sidebarWidth / 2.06 ** 16;
             // Convert bearing of 79 to radians
-            const bearingRadians = (79 * Math.PI) / 180;
+            let bearingRadians = (79 * Math.PI) / 180;
             // Calculate the offset in longitude and latitude directions
-            const offsetLng = Math.cos(bearingRadians) * sidebarWidthDegrees;
-            const offsetLat = Math.sin(bearingRadians) * sidebarWidthDegrees;
+            let offsetLng = Math.cos(bearingRadians) * sidebarWidthDegrees;
+            let offsetLat = Math.sin(bearingRadians) * sidebarWidthDegrees;
             // Define new bounds with the offsets
             let neLat = bounds._northEast.lat - offsetLat;
             let neLng = bounds._northEast.lng - offsetLng;
@@ -730,16 +745,26 @@
           }
         });
       } else {
+        // remove the biographies layer from the map
+        map.removeLayer(biographies);
+        // clear the markers layer group
+        markers.clearLayers();
         // iterate through the bios layer
         biographies.eachLayer(function (layer) {
           // if the dropdown selection matches the scientist name
           if (dropdownSelection == layer.feature.properties.Name) {
 
+            // push the layer to the markers layer group
+            markers.addLayer(layer);
+
+            // add the markers layer group to the map
+            map.addLayer(markers);
+
             // Build out the chapterContent array
-            var content = '<h6>' + layer.feature.properties.Name + '<br><i>';
+            let content = '<h6>' + layer.feature.properties.Name + '<br><i>';
 
             // Collect unique Cont_Names for the selected Name
-            var contNames = [];
+            let contNames = [];
 
             biographies.eachLayer(function (subLayer) {
               if (layer.feature.properties.Name === subLayer.feature.properties.Name) {
@@ -756,15 +781,57 @@
 
             // Set the innerHTML of the info div
             info.innerHTML = content;
-    
-            // Set riseOnHover to true to bring the matching marker to the front when hovered
-            layer.options.riseOnHover = true;
 
-            // Open the popup for the first matching layer
-            layer.openPopup();
-            
+            // Check if there are markers in the markers layer group
+            if (markers.getLayers().length > 0) {
+              
+              // Initialize an empty LatLngBounds object
+              let bounds = L.latLngBounds();
+
+              // Iterate through each marker in the layer group
+              markers.eachLayer(function (marker) {
+                bounds.extend(marker.getLatLng());
+              });
+
+              // Fly the map to the bounds of the markers layer group
+              map.flyToBounds(bounds, { duration: 0.485 });
+
+            }
+
           }
         });
+
+        // Set a 500 timeout
+        setTimeout(function () {
+              // Define the sidebar width in pixels
+              let sidebarWidth = document.getElementById('sidebar').offsetWidth;
+    
+              // Define the sidebar width as longitudinal decimal degrees at the current zoom level
+              let sidebarWidthDegrees = sidebarWidth / 2.06 ** map.getZoom();              
+
+              // Get the center of the map
+              let center = map.getCenter();
+
+              // Get the bearing of the map
+              let bearing = map.getBearing();
+
+              // Convert bearing to radians
+              let bearingRadians = (bearing * Math.PI) / 180;
+
+              // Calculate the offset in longitude and latitude directions
+              let offsetLng = Math.cos(bearingRadians) * sidebarWidthDegrees;
+              let offsetLat = Math.sin(bearingRadians) * sidebarWidthDegrees;
+
+              // Calculate the new map center
+              let newMapCenter = L.latLng(
+                center.lat - offsetLat,
+                center.lng - offsetLng
+              );
+
+              // Pan to the new map center
+              map.panTo(newMapCenter);
+        }, 500);
+
       }
     }; 
     
