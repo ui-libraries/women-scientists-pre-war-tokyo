@@ -321,12 +321,13 @@
         <!-- Add a button to trigger the handleButtonClick() function -->
         <div id="search-instructions">
           <p>
-          <h2 class="choose">Click the search button or zoom back to Tokyo.</h2>
+          <!--<h2 class="choose">Click the search button or zoom back to Tokyo.</h2>-->
+          <h2 class="choose">Or zoom back to the complete map.</h2>
           </p>
         </div>
         <!-- Wrap the buttons in a container div to control their layout -->
         <div class="button-container">
-          <button onclick="handleButtonClick()">Search</button>
+          <!--<button onclick="handleButtonClick()">Search</button>-->
           <button onclick="handleZoomOutClick()">Zoom Out</button>
         </div>
         <span class='introbreak'></span>
@@ -455,7 +456,24 @@
         // add a popup to the layer
         onEachFeature: function (feature, layer) {
 
-          layer.bindPopup('<h4>' + feature.properties.Cont_Name + '<br><i>' + feature.properties.Hist_Name + '</i></h4><hr><h5>' + feature.properties.Description + '</h5>', {
+          // define the properties
+          let props = feature.properties;
+          // define the contemporary name
+          let contName = props.Cont_Name;
+          // define the historical name
+          let histName = props.Hist_Name;
+          // leave uniName as an undefined variable
+          let uniName;
+          // if the contemporary name is different from the historical name
+          if (contName !== histName) {
+            // define the uniName variable as a concatenation of the contemporary name and the historical name
+            uniName = contName + '<br><i>' + histName + '</i>';
+          } else {
+            // define the uniName variable as the contemporary name
+            uniName = contName;
+          };
+
+          layer.bindPopup('<h4>' + uniName + '</h4><hr><h5>' + feature.properties.Description + '</h5>', {
             sticky: true,
             direction: 'top',
             opacity: 0.9,
@@ -466,10 +484,10 @@
             mouseover: function (e) {
               this.openPopup();
               this.setStyle({
-                color: '#0072CE',
+                color: 'gold',
                 weight: 2,
                 opacity: 1,
-                fillColor: '#0072CE',
+                fillColor: 'gold',
                 fillOpacity: 0.75,
               });
             },
@@ -503,6 +521,30 @@
           });
         },
         onEachFeature: function(feature, layer) {
+
+          // define the properties
+          let props = feature.properties;
+          // define the contemporary name
+          let contName = props.Cont_Name;
+          // define the historical name
+          let histName = props.Hist_Name;
+          // leave uniName as an undefined variable
+          let uniName;
+          // if the contemporary name is different from the historical name
+          if (contName !== histName) {
+            // define the uniName variable as a concatenation of the contemporary name and the historical name
+            uniName = contName + '<br><i>' + histName + '</i>';
+          } else {
+            // define the uniName variable as the contemporary name
+            uniName = contName;
+          }; 
+
+          layer.bindPopup('<h4>' + feature.properties.Name + '<br>' + uniName + '</h4><hr><h5>' + feature.properties.Bio + '</h5>', {
+            sticky: true,
+            direction: 'top',
+            opacity: 0.9,
+            className: 'custom-tooltip'
+          });
           // on mouseover
           layer.on('mouseover', function (e) {
             // open the popup
@@ -528,12 +570,6 @@
               popupAnchor: [1, -34],
               shadowSize: [41, 41]
             }));
-          });
-          layer.bindPopup('<h4>' + feature.properties.Name + '<br>' + feature.properties.Cont_Name + '<br><i>' + feature.properties.Hist_Name + '</i></h4><hr><h5>' + feature.properties.Bio + '</h5>', {
-            sticky: true,
-            direction: 'top',
-            opacity: 0.9,
-            className: 'custom-tooltip'
           });
         }
       });
@@ -664,6 +700,11 @@
         };
       });
 
+      // On dropdown change...
+      $('#chapter-select').change(function () {
+        handleButtonClick();
+      });
+        
     });
 
     // Function to get the selected radio value
@@ -738,8 +779,25 @@
             // open the popup
             layer.openPopup();
 
+            // define the properties
+            let props = layer.feature.properties;
+            // define the contemporary name
+            let contName = props.Cont_Name;
+            // define the historical name
+            let histName = props.Hist_Name;
+            // leave uniName as an undefined variable
+            let uniName;
+            // if the contemporary name is different from the historical name
+            if (contName !== histName) {
+              // define the uniName variable as a concatenation of the contemporary name and the historical name
+              uniName = contName + '<br><i>' + histName + '</i>';
+            } else {
+              // define the uniName variable as the contemporary name
+              uniName = contName;
+            };             
+
             // Build out the chapterContent array
-            chapterContent.push('<h6>' + layer.feature.properties.Cont_Name + '<br><i>' + layer.feature.properties.Hist_Name + '</i></h6><hr><h7>' + layer.feature.properties.Description + '<br><br><b>Scientists:</b><br>' + layer.feature.properties.Scientists + '</h7>');
+            chapterContent.push('<h6>' + uniName + '</h6><hr><h7>' + layer.feature.properties.Description + '<br><br><b>Scientists:</b><br>' + layer.feature.properties.Scientists + '</h7>');
             // Join the chapterContent array, and set it as the innerHTML of the info div
             info.innerHTML = chapterContent;
           }
@@ -761,20 +819,38 @@
             map.addLayer(markers);
 
             // Build out the chapterContent array
-            let content = '<h6>' + layer.feature.properties.Name + '<br><i>';
+            let content = '<h6>' + layer.feature.properties.Name + '<br>';
 
             // Collect unique Cont_Names for the selected Name
             let contNames = [];
 
             biographies.eachLayer(function (subLayer) {
+              
+              // define the properties
+              let props = subLayer.feature.properties;
+              // define the contemporary name
+              let contName = props.Cont_Name;
+              // define the historical name
+              let histName = props.Hist_Name;
+              // leave uniName as an undefined variable
+              let uniName;
+              // if the contemporary name is different from the historical name
+              if (contName !== histName) {
+                // define the uniName variable as a concatenation of the contemporary name and the historical name
+                uniName = contName + ' (' + histName + ')';
+              } else {
+                // define the uniName variable as the contemporary name
+                uniName = contName;
+              };  
+
               if (layer.feature.properties.Name === subLayer.feature.properties.Name) {
                 // push the Cont_Name to the contNames array
-                contNames.push(subLayer.feature.properties.Cont_Name);
+                contNames.push(uniName);
               }
             });
             
             // Add each unique Cont_Name under Name
-            content += contNames.join('<br>') + '</i></h6><hr>';
+            content += contNames.join('<br>') + '</h6><hr>';
             
             // Add Bio (assuming it's the same for all Cont_Names under the same Name)
             content += '<h7>' + layer.feature.properties.Bio + '</h7>';
