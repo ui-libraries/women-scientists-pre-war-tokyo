@@ -835,7 +835,7 @@
             };             
 
             // Build out the chapterContent array
-            chapterContent.push('<h6>' + uniName + '</h6><hr><h7>' + layer.feature.properties.Description + '<br><br><b>Scientists:</b><br>' + layer.feature.properties.Scientists + '</h7>');
+            chapterContent.push('<h6>' + uniName + '</h6><hr><h7>' + layer.feature.properties.Description + '<br>' + layer.feature.properties.img + '<br><br><b>Scientists:</b><br>' + layer.feature.properties.Scientists + '</h7>');
             // Join the chapterContent array, and set it as the innerHTML of the info div
             info.innerHTML = chapterContent;
           }
