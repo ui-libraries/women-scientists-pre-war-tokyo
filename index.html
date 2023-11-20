@@ -832,10 +832,17 @@
             } else {
               // define the uniName variable as the contemporary name
               uniName = contName;
-            };             
+            };
+            
+            let img;
+            if (props.img) {
+              img = '<br><br>' + props.img;
+            } else {
+              img = '';
+            };
 
             // Build out the chapterContent array
-            chapterContent.push('<h6>' + uniName + '</h6><hr><h7>' + layer.feature.properties.Description + '<br>' + layer.feature.properties.img + '<br><br><b>Scientists:</b><br>' + layer.feature.properties.Scientists + '</h7>');
+            chapterContent.push('<h6>' + uniName + '</h6><hr><h7>' + layer.feature.properties.Description + img + '<br><br><b>Scientists:</b><br>' + layer.feature.properties.Scientists + '</h7>');
             // Join the chapterContent array, and set it as the innerHTML of the info div
             info.innerHTML = chapterContent;
           }
@@ -889,9 +896,16 @@
             
             // Add each unique Cont_Name under Name
             content += contNames.join('<br>') + '</h6><hr>';
+
+            let img;
+            if (layer.feature.properties.img) {
+              img = '<br><br>' + layer.feature.properties.img;
+            } else {
+              img = '';
+            };
             
             // Add Bio (assuming it's the same for all Cont_Names under the same Name)
-            content += '<h7>' + layer.feature.properties.Bio + '</h7>';
+            content += '<h7>' + layer.feature.properties.Bio + '</h7>' + img;
 
             // Set the innerHTML of the info div
             info.innerHTML = content;
