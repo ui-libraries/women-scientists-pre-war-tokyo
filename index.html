@@ -329,7 +329,7 @@
         </div>
         <div id="radio-select">
           <p>
-          <h2 class="choose">Choose from the following options.</h2>
+          <h2 class="choose" id="options">Choose from the following options.</h2>
           </p>
           <input type="radio" id="option-one" name="select" value="option-one" checked>
           <label for="option-one">Academic Institutions</label><br>
@@ -339,7 +339,7 @@
         </div>
         <div id="dropdown-instructions">
           <p>
-          <h2 class="choose">Select your topic of interest.</h2>
+          <h2 class="choose" id="topics">Select your topic of interest.</h2>
           </p>
         </div>
         <form id="map_parameters" name="map_parameters" action="#" accept-charset="utf-8" class="inlineForm"><select
@@ -348,21 +348,35 @@
         <div id="search-instructions">
           <p>
           <!--<h2 class="choose">Click the search button or zoom back to Tokyo.</h2>-->
-          <h2 class="choose">Or zoom back to the complete map.</h2>
+          <h2 class="choose" id="zoomout">Or zoom back to the complete map.</h2>
           </p>
         </div>
         <!-- Wrap the buttons in a container div to control their layout -->
         <div class="button-container">
           <!--<button onclick="handleButtonClick()">Search</button>-->
-          <button onclick="handleZoomOutClick()">Zoom Out</button>
+          <button id="zoomOutButton" onclick="handleZoomOutClick()">Zoom Out</button>
         </div>
         <span class='introbreak'></span>
         <div id="sidebar-info" class="my-info-1">
           <div id="content-info" class="contentinfo hide"></div>
         </div>
-        <br>
+
+        <div id="dropdown-instructions">
+          <p>
+          <h2 class="choose" id="language">Read content in Japanese or English.</h2>
+          </p>
+        </div>
+        <form id="map_parameters" name="map_parameters" action="#" accept-charset="utf-8" class="inlineForm">
+          <select id="language-select" class="div-toggle" data-target=".my-info-1">
+            <option value="0">Select a Language</option>
+            <option value="1">Japanese</option>
+            <option value="2">English</option>
+          </select>
+        </form>
+          
+
         <!-- google translate element -->
-        <div id="google_translate_element"></div>
+        <!--<div id="google_translate_element"></div>-->
       </div>
     </div>
   </div>
@@ -742,6 +756,11 @@
       $('#chapter-select').change(function () {
         handleButtonClick();
       });
+
+      // On language dropdown change...
+      $('#language-select').change(function () {
+        handleButtonClick();
+      });
         
     });
 
@@ -778,6 +797,50 @@
     
     // Define the handleButtonClick() function
     function handleButtonClick() {
+
+      // log the selected language
+      console.log(getSelectedLanguage());
+      // if the selected language is Japanese...
+      if (getSelectedLanguage() == "1") {
+        // change the following classes to Japanese
+        document.getElementsByClassName("sidebar-header")[0].innerHTML = "戦前の東京の女性科学者"; // Women Scientists in Pre-War Tokyo
+        document.getElementsByClassName("about")[0].innerHTML = "このプロジェクトについて"; // About This Project
+        document.getElementsByClassName("details")[0].innerHTML = "近代日本の科学の発展は、男性科学者の貢献や男性のみの高等教育機関を中心に語られてきました。本プロジェクトは、20世紀前半の日本の科学に女性を位置づけ、これら女性科学者の貢献を確認するものです。政府が女子高等教育の発展や女性科学者育成に消極的な状況にあって、意欲的な女性やその支援者たちは、女性が科学の探求に取り組むことのできる場所を作り出しました。これらの場所をマッピングし、関係する女性科学者に言及することによって、本プロジェクトは女性が近代日本の科学の発展と不可分の存在であったことを示します。"; // The dominant narrative of modern Japan's scientific journey has centered on the contributions of male scientists and male-only academic institutions. This project is an attempt to undo the erasure of women scientists and affirm their contributions to science in early twentieth-century Japan. Although the government was not active in promoting women’s higher education and training women scientists, ambitious women and their supporters created spaces where women could engage in scientific inquiry. By mapping these sites and naming the women scientists associated with them, this project demonstrates that women were part of the development of modern science in Japan.
+        // get by id
+        document.getElementById("options").innerHTML = "以下のオプションから選んでください。"; // Choose from the following options.
+        // change the "option-one" label value to "大学" (universities)
+        document.querySelector('label[for="option-one"]').textContent = "大学"; // Academic Institutions
+        // change the "option-two" label value to "科学者" (scientists)
+        document.querySelector('label[for="option-two"]').textContent = "科学者"; // Scientists
+        // get by id
+        document.getElementById("topics").innerHTML = "興味のあるトピックを選んでください。"; // Select your topic of interest.
+        document.getElementById("zoomout").innerHTML = "完全な地図に戻る。"; // Or zoom back to the complete map.
+        document.getElementById("zoomOutButton").textContent = "完全な地図"; // Zoom Out
+        document.getElementById("language").innerHTML = "日本語または英語でコンテンツを読む。"; // Read content in Japanese or English.
+        document.getElementById("language-select").options[0].textContent = "言語を選択"; // "Select a Language" in Japanese
+        document.getElementById("language-select").options[1].textContent = "日本語"; // "Japanese" in Japanese
+        document.getElementById("language-select").options[2].textContent = "英語"; // "English" in Japanese
+      } // if the selected language is English...
+      if (getSelectedLanguage() == "2") {
+        // change the following classes to English
+        document.getElementsByClassName("sidebar-header")[0].innerHTML = "Women Scientists in Pre-War Tokyo";
+        document.getElementsByClassName("about")[0].innerHTML = "About This Project";
+        document.getElementsByClassName("details")[0].innerHTML = "The dominant narrative of modern Japan's scientific journey has centered on the contributions of male scientists and male-only academic institutions. This project is an attempt to undo the erasure of women scientists and affirm their contributions to science in early twentieth-century Japan. Although the government was not active in promoting women’s higher education and training women scientists, ambitious women and their supporters created spaces where women could engage in scientific inquiry. By mapping these sites and naming the women scientists associated with them, this project demonstrates that women were part of the development of modern science in Japan.";
+        // get by id
+        document.getElementById("options").innerHTML = "Choose from the following options.";
+        // change the "option-one" label value
+        document.querySelector('label[for="option-one"]').textContent = "Academic Institutions";
+        // change the "option-two" label value
+        document.querySelector('label[for="option-two"]').textContent = "Scientists";
+        // get by id
+        document.getElementById("topics").innerHTML = "Select your topic of interest.";
+        document.getElementById("zoomout").innerHTML = "Or zoom back to the complete map.";
+        document.getElementById("zoomOutButton").textContent = "Zoom Out";
+        document.getElementById("language").innerHTML = "Read content in Japanese or English.";
+        document.getElementById("language-select").options[0].textContent = "Select a Language";
+        document.getElementById("language-select").options[1].textContent = "Japanese";
+        document.getElementById("language-select").options[2].textContent = "English";        
+      }
       
       // clear the chapterContent array
       chapterContent.length = 0;
@@ -962,6 +1025,13 @@
 
       }
     }; 
+
+    // Write a function to check which language is selected
+    function getSelectedLanguage() {
+      const language = document.getElementById('language-select');
+      const selectedLanguage = language.value;
+      return selectedLanguage;
+    };
     
 
 
