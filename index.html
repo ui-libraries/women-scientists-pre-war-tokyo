@@ -369,7 +369,7 @@
         <form id="map_parameters" name="map_parameters" action="#" accept-charset="utf-8" class="inlineForm">
           <select id="language-select" class="div-toggle" data-target=".my-info-1">
             <option value="0">Select a Language</option>
-            <option value="1">Japanese</option>
+            <option value="1">日本語</option>
             <option value="2">English</option>
           </select>
         </form>
@@ -819,7 +819,7 @@
         document.getElementById("language").innerHTML = "日本語または英語でコンテンツを読む。"; // Read content in Japanese or English.
         document.getElementById("language-select").options[0].textContent = "言語を選択"; // "Select a Language" in Japanese
         document.getElementById("language-select").options[1].textContent = "日本語"; // "Japanese" in Japanese
-        document.getElementById("language-select").options[2].textContent = "英語"; // "English" in Japanese
+        document.getElementById("language-select").options[2].textContent = "English";
       } // if the selected language is English...
       if (getSelectedLanguage() == "2") {
         // change the following classes to English
@@ -838,7 +838,7 @@
         document.getElementById("zoomOutButton").textContent = "Zoom Out";
         document.getElementById("language").innerHTML = "Read content in Japanese or English.";
         document.getElementById("language-select").options[0].textContent = "Select a Language";
-        document.getElementById("language-select").options[1].textContent = "Japanese";
+        document.getElementById("language-select").options[1].textContent = "日本語";
         document.getElementById("language-select").options[2].textContent = "English";        
       }
       
