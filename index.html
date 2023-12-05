@@ -710,19 +710,37 @@
           universities.addTo(map);
           // iterate through the universities layer
           universities.eachLayer(function (layer) {
-            // add the institution name to the institutionList array
-            institutionList.push(layer.feature.properties.Cont_Name);
+            // if the selected language is nothing or English...
+            if (getSelectedLanguage() == "0" || getSelectedLanguage() == "2") {
+              // add the institution name to the institutionList array
+              institutionList.push(layer.feature.properties.Cont_Name);
+            };
+            // if the selected language is Japanese...
+            if (getSelectedLanguage() == "1") {
+              // add the institution name to the institutionList array
+              institutionList.push(layer.feature.properties.Institution_Cont_Jpn);
+            };
             // sort the institutionList array alphabetically
             institutionList.sort();
             // define the chapter-select dropdown content using each institution name from the institutionList array
             let eachInstitution = institutionList.filter((v, i, a) => a.indexOf(v) === i);
-            let tmpHTML = '<select class="custom-select"><option value="0">Select a University</option>';
+            // leave tmpHTML as an undefined variable
+            let tmpHTML;
+            // if the sleected language is nothing or English...
+            if (getSelectedLanguage() == "0" || getSelectedLanguage() == "2") {
+              tmpHTML = '<select class="custom-select"><option value="0">Select a University</option>';
+            };
+            // if the selected language is Japanese...
+            if (getSelectedLanguage() == "1") {
+              tmpHTML = '<select class="custom-select"><option value="0">大学を選んでください。</option>';
+            };
             for (let i = 0; i < eachInstitution.length; i++) {
               tmpHTML += '<option value="' + eachInstitution[i] + '">' + eachInstitution[i] + '</option>';
             }
             tmpHTML += '</select>';
             document.getElementById('chapter-select').innerHTML = tmpHTML;
           });
+
         } // Otherwise, remove the universities layer from the map
         else {
           // remove the universities layer from the map
@@ -739,13 +757,32 @@
           biographies.addTo(map);
           // iterate through the bios layer
           biographies.eachLayer(function (layer) {
+            // if the selected language is nothing or English...
+            if (getSelectedLanguage() == "0" || getSelectedLanguage() == "2") {
+              // add the scientist name to the scientistList array
+              scientistList.push(layer.feature.properties.Name);
+            };
+            // if the selected language is Japanese...
+            if (getSelectedLanguage() == "1") {
+              // add the scientist name to the scientistList array
+              scientistList.push(layer.feature.properties.Name_Jpn);
+            };
             // add the scientist name to the scientistList array
             scientistList.push(layer.feature.properties.Name);
             // sort the scientistList array alphabetically
             scientistList.sort();
+            // leave tmpHTML as an undefined variable
+            let tmpHTML;
             // define the chapter-select dropdown content using each scientist name from the scientistList array
             let eachScientist = scientistList.filter((v, i, a) => a.indexOf(v) === i);
-            let tmpHTML = '<select class="custom-select"><option value="0">Select a Scientist</option>';
+            // if the selected language is nothing or English...
+            if (getSelectedLanguage() == "0" || getSelectedLanguage() == "2") {
+              tmpHTML = '<select class="custom-select"><option value="0">Select a Scientist</option>';
+            };
+            // if the selected language is Japanese...
+            if (getSelectedLanguage() == "1") {
+              tmpHTML = '<select class="custom-select"><option value="0">科学者を選んでください。</option>';
+            };
             for (let i = 0; i < eachScientist.length; i++) {
               tmpHTML += '<option value="' + eachScientist[i] + '">' + eachScientist[i] + '</option>';
             }
@@ -782,8 +819,8 @@
           document.getElementById("language-select").options[0].textContent = "言語を選択"; // "Select a Language" in Japanese
           document.getElementById("language-select").options[1].textContent = "日本語"; // "Japanese" in Japanese
           document.getElementById("language-select").options[2].textContent = "English";
-        } // if the selected language is English...
-        if (getSelectedLanguage() == "2") {
+        } // if the selected language is English or nothing...
+        if (getSelectedLanguage() == "2" || getSelectedLanguage() == "0") {
           // change the following classes to English
           document.getElementsByClassName("sidebar-header")[0].innerHTML = "Women Scientists in Pre-War Tokyo";
           document.getElementsByClassName("about")[0].innerHTML = "About This Project";
@@ -802,7 +839,203 @@
           document.getElementById("language-select").options[0].textContent = "Select a Language";
           document.getElementById("language-select").options[1].textContent = "日本語";
           document.getElementById("language-select").options[2].textContent = "English";        
-        }
+        };
+        // If the option-one radio button is selected...
+        if (document.getElementById('option-one').checked) {
+          // clear the dropdown
+          document.getElementById('chapter-select').innerHTML = '';
+          // clear the institutionList array
+          institutionList.length = 0;
+          // clear the scientistList array
+          scientistList.length = 0;
+          // iterate through the universities layer
+          universities.eachLayer(function (layer) {
+            // if the selected language is nothing or English...
+            if (getSelectedLanguage() == "0" || getSelectedLanguage() == "2") {
+              // add the institution name to the institutionList array
+              institutionList.push(layer.feature.properties.Cont_Name);
+            };
+            // if the selected language is Japanese...
+            if (getSelectedLanguage() == "1") {
+              // add the institution name to the institutionList array
+              institutionList.push(layer.feature.properties.Institution_Cont_Jpn);
+            };
+            // sort the institutionList array alphabetically
+            institutionList.sort();
+            // define the chapter-select dropdown content using each institution name from the institutionList array
+            let eachInstitution = institutionList.filter((v, i, a) => a.indexOf(v) === i);
+            // leave tmpHTML as an undefined variable
+            let tmpHTML;
+            // if the sleected language is nothing or English...
+            if (getSelectedLanguage() == "0" || getSelectedLanguage() == "2") {
+              tmpHTML = '<select class="custom-select"><option value="0">Select a University</option>';
+            };
+            // if the selected language is Japanese...
+            if (getSelectedLanguage() == "1") {
+              tmpHTML = '<select class="custom-select"><option value="0">大学を選んでください。</option>';
+            };
+            for (let i = 0; i < eachInstitution.length; i++) {
+              tmpHTML += '<option value="' + eachInstitution[i] + '">' + eachInstitution[i] + '</option>';
+            }
+            tmpHTML += '</select>';
+            document.getElementById('chapter-select').innerHTML = tmpHTML;
+            
+            // define the properties
+            let props = layer.feature.properties;
+            // leave contName as an undefined variable
+            let contName;
+            // leave histName as an undefined variable
+            let histName;
+
+            // if the selected language is nothing or English...
+            if (getSelectedLanguage() == "0" || getSelectedLanguage() == "2") {
+              // define the contemporary name
+              contName = props.Cont_Name;
+              // define the historical name
+              histName = props.Hist_Name;
+            };
+            // if the selected language is Japanese...
+            if (getSelectedLanguage() == "1") {
+              // define the contemporary name
+              contName = props.Institution_Cont_Jpn;
+              // define the historical name
+              histName = props.Institution_Hist_Jpn;
+            };
+
+            // leave uniName as an undefined variable
+            let uniName;
+
+            // if the contemporary name is different from the historical name
+            if (contName !== histName) {
+              // define the uniName variable as a concatenation of the contemporary name and the historical name
+              uniName = contName + '<br><i>' + histName + '</i>';
+            } else {
+              // define the uniName variable as the contemporary name
+              uniName = contName;
+            };
+
+            // leave newPopupContent as an undefined variable
+            let newPopupContent;
+
+            // if the selected language is nothing or English...
+            if (getSelectedLanguage() == "0" || getSelectedLanguage() == "2") {
+              // define the newPopupContent variable
+              newPopupContent = '<h4>' + uniName + '</h4><hr><h5>' + props.Description + '</h5>';
+            };
+
+            // if the selected language is Japanese...
+            if (getSelectedLanguage() == "1") {
+              // define the newPopupContent variable
+              newPopupContent = '<h4>' + uniName + '</h4><hr><h5>' + props.Description_Jpn + '</h5>';
+            };
+
+            layer.bindPopup(newPopupContent, {
+              sticky: true,
+              direction: 'top',
+              opacity: 0.9,
+              className: 'custom-tooltip',
+            });            
+            
+          });
+        };
+        // If the option-two radio button is selected...
+        if (document.getElementById('option-two').checked) {
+          // clear the dropdown
+          document.getElementById('chapter-select').innerHTML = '';
+          // clear the institutionList array
+          institutionList.length = 0;
+          // clear the scientistList array
+          scientistList.length = 0;
+          // iterate through the bios layer
+          biographies.eachLayer(function (layer) {
+            // if the selected language is nothing or English...
+            if (getSelectedLanguage() == "0" || getSelectedLanguage() == "2") {
+              // add the scientist name to the scientistList array
+              scientistList.push(layer.feature.properties.Name);
+            };
+            // if the selected language is Japanese...
+            if (getSelectedLanguage() == "1") {
+              // add the scientist name to the scientistList array
+              scientistList.push(layer.feature.properties.Name_Jpn);
+            };
+            // sort the scientistList array alphabetically
+            scientistList.sort();
+            // leave tmpHTML as an undefined variable
+            let tmpHTML;
+            // define the chapter-select dropdown content using each scientist name from the scientistList array
+            let eachScientist = scientistList.filter((v, i, a) => a.indexOf(v) === i);
+            // if the selected language is nothing or English...
+            if (getSelectedLanguage() == "0" || getSelectedLanguage() == "2") {
+              tmpHTML = '<select class="custom-select"><option value="0">Select a Scientist</option>';
+            };
+            // if the selected language is Japanese...
+            if (getSelectedLanguage() == "1") {
+              tmpHTML = '<select class="custom-select"><option value="0">科学者を選んでください。</option>';
+            };
+            for (let i = 0; i < eachScientist.length; i++) {
+              tmpHTML += '<option value="' + eachScientist[i] + '">' + eachScientist[i] + '</option>';
+            }
+            tmpHTML += '</select>';
+            document.getElementById('chapter-select').innerHTML = tmpHTML;
+
+            // define the properties
+            let props = layer.feature.properties;
+            // leave contName as an undefined variable
+            let contName;
+            // leave histName as an undefined variable
+            let histName;
+
+            // if the selected language is nothing or English...
+            if (getSelectedLanguage() == "0" || getSelectedLanguage() == "2") {
+              // define the contemporary name
+              contName = props.Cont_Name;
+              // define the historical name
+              histName = props.Hist_Name;
+            };
+            // if the selected language is Japanese...
+            if (getSelectedLanguage() == "1") {
+              // define the contemporary name
+              contName = props.Cont_Name_Jpn;
+              // define the historical name
+              histName = props.Hist_Name_Jpn;
+            };
+
+            // leave uniName as an undefined variable
+            let uniName;
+
+            // if the contemporary name is different from the historical name
+            if (contName !== histName) {
+              // define the uniName variable as a concatenation of the contemporary name and the historical name
+              uniName = contName + '<br><i>' + histName + '</i>';
+            } else {
+              // define the uniName variable as the contemporary name
+              uniName = contName;
+            };
+
+            // leave newPopupContent as an undefined variable
+            let newPopupContent;
+
+            // if the selected language is nothing or English...
+            if (getSelectedLanguage() == "0" || getSelectedLanguage() == "2") {
+              // define the newPopupContent variable
+              newPopupContent = '<h4>' + props.Name + '<br>' + uniName + '</h4><hr><h5>' + props.Bio + '</h5>';
+            };
+
+            // if the selected language is Japanese...
+            if (getSelectedLanguage() == "1") {
+              // define the newPopupContent variable
+              newPopupContent = '<h4>' + props.Name_Jpn + '<br>' + uniName + '</h4><hr><h5>' + props.Bio_Jpn + '</h5>';
+            };
+
+            layer.bindPopup(newPopupContent, {
+              sticky: true,
+              direction: 'top',
+              opacity: 0.9,
+              className: 'custom-tooltip',
+            });  
+
+          });
+        };
       });
         
     });
@@ -852,11 +1085,10 @@
 
       // If the radio selection is "option-one"
       if (radioSelection == "option-one") {
-
         // iterate through the universities layer
         universities.eachLayer(function (layer) {
           // if the dropdown selection matches the institution name
-          if (dropdownSelection == layer.feature.properties.Cont_Name) {
+          if (dropdownSelection == layer.feature.properties.Cont_Name || dropdownSelection == layer.feature.properties.Institution_Cont_Jpn) {
             // Get the bounds of the polygon
             let bounds = layer.getBounds();
             // Define the sidebar width in pixels
@@ -882,10 +1114,24 @@
 
             // define the properties
             let props = layer.feature.properties;
-            // define the contemporary name
-            let contName = props.Cont_Name;
-            // define the historical name
-            let histName = props.Hist_Name;
+            // leave the contemporary name undefined
+            let contName;
+            // leave the historical name undefined
+            let histName;
+            // if the selected language is nothing or English...
+            if (getSelectedLanguage() == "0" || getSelectedLanguage() == "2") {
+              // define the contemporary name
+              contName = props.Cont_Name;
+              // define the historical name
+              histName = props.Hist_Name;
+            };
+            // if the selected language is Japanese...
+            if (getSelectedLanguage() == "1") {
+              // define the contemporary name
+              contName = props.Institution_Cont_Jpn;
+              // define the historical name
+              histName = props.Institution_Hist_Jpn;
+            };
             // leave uniName as an undefined variable
             let uniName;
             // if the contemporary name is different from the historical name
@@ -904,8 +1150,17 @@
               img = '';
             };
 
-            // Build out the chapterContent array
-            chapterContent.push('<h6>' + uniName + '</h6><hr><h7>' + layer.feature.properties.Description + img + '<br><br><b>Scientists:</b><br>' + layer.feature.properties.Scientists + '</h7>');
+            // if the selected language is nothing or English...
+            if (getSelectedLanguage() == "0" || getSelectedLanguage() == "2") {
+              // Build out the chapterContent array
+              chapterContent.push('<h6>' + uniName + '</h6><hr><h7>' + layer.feature.properties.Description + img + '<br><br><b>Scientists:</b><br>' + layer.feature.properties.Scientists + '</h7>');
+            };
+            // if the selected language is Japanese...
+            if (getSelectedLanguage() == "1") {
+              // Build out the chapterContent array
+              chapterContent.push('<h6>' + uniName + '</h6><hr><h7>' + layer.feature.properties.Description_Jpn + img + '<br><br><b>科学者:</b><br>' + layer.feature.properties.Scientists_Jpn + '</h7>');
+            };
+
             // Join the chapterContent array, and set it as the innerHTML of the info div
             info.innerHTML = chapterContent;
           }
@@ -918,7 +1173,7 @@
         // iterate through the bios layer
         biographies.eachLayer(function (layer) {
           // if the dropdown selection matches the scientist name
-          if (dropdownSelection == layer.feature.properties.Name) {
+          if (dropdownSelection == layer.feature.properties.Name || dropdownSelection == layer.feature.properties.Name_Jpn) {
 
             // push the layer to the markers layer group
             markers.addLayer(layer);
@@ -926,8 +1181,19 @@
             // add the markers layer group to the map
             map.addLayer(markers);
 
-            // Build out the chapterContent array
-            let content = '<h6>' + layer.feature.properties.Name + '<br>';
+            // leave content undefined
+            let content;
+
+            // if the selected language is nothing or English...
+            if (getSelectedLanguage() == "0" || getSelectedLanguage() == "2") {
+              // Build out the chapterContent array
+              content = '<h6>' + layer.feature.properties.Name + '<br>';
+            };
+            // if the selected language is Japanese...
+            if (getSelectedLanguage() == "1") {
+              // Build out the chapterContent array
+              content = '<h6>' + layer.feature.properties.Name_Jpn + '<br>';
+            };
 
             // Collect unique Cont_Names for the selected Name
             let contNames = [];
@@ -936,10 +1202,24 @@
               
               // define the properties
               let props = subLayer.feature.properties;
-              // define the contemporary name
-              let contName = props.Cont_Name;
-              // define the historical name
-              let histName = props.Hist_Name;
+              // leave the contemporary name undefined
+              let contName;
+              // leave the historical name undefined
+              let histName;
+              // if the selected language is nothing or English...
+              if (getSelectedLanguage() == "0" || getSelectedLanguage() == "2") {
+                // define the contemporary name
+                contName = props.Cont_Name;
+                // define the historical name
+                histName = props.Hist_Name;
+              };
+              // if the selected language is Japanese...
+              if (getSelectedLanguage() == "1") {
+                // define the contemporary name
+                contName = props.Cont_Name_Jpn;
+                // define the historical name
+                histName = props.Hist_Name_Jpn;
+              };
               // leave uniName as an undefined variable
               let uniName;
               // if the contemporary name is different from the historical name
@@ -951,7 +1231,7 @@
                 uniName = contName;
               };  
 
-              if (layer.feature.properties.Name === subLayer.feature.properties.Name) {
+              if (layer.feature.properties.Name === subLayer.feature.properties.Name || layer.feature.properties.Name_Jpn === subLayer.feature.properties.Name_Jpn) {
                 // push the Cont_Name to the contNames array
                 contNames.push(uniName);
               }
@@ -966,9 +1246,17 @@
             } else {
               img = '';
             };
-            
-            // Add Bio (assuming it's the same for all Cont_Names under the same Name)
-            content += '<h7>' + layer.feature.properties.Bio + '</h7>' + img;
+
+            // if the selected language is nothing or English...
+            if (getSelectedLanguage() == "0" || getSelectedLanguage() == "2") {
+              // Add Bio (assuming it's the same for all Cont_Names under the same Name)
+              content += '<h7>' + layer.feature.properties.Bio + '</h7>' + img;
+            };
+            // if the selected language is Japanese...
+            if (getSelectedLanguage() == "1") {
+              // Add Bio (assuming it's the same for all Cont_Names under the same Name)
+              content += '<h7>' + layer.feature.properties.Bio_Jpn + '</h7>' + img;
+            };
 
             // Set the innerHTML of the info div
             info.innerHTML = content;
