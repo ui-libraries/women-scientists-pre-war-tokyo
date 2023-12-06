@@ -2,12 +2,12 @@
 <html>
 
 <head>
-  <title>Early 20th Century Women Scientists in Tokyo</title>
+  <title>Women Scientists in Pre-War Tokyo</title>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
 
   <!-- Leaflet CSS -->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9/dist/leaflet.css">
+  <link rel="stylesheet" href="src/leaflet@1.9.4.css">
   <!-- fonts -->
   <!-- link to Montserrat font -->
   <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
@@ -384,27 +384,26 @@
   <div id="map"></div>
 
   <!-- Leaflet JS -->
-  <script src="https://unpkg.com/leaflet@1.9/dist/leaflet-src.js"></script>
+  <script src="src/leaflet@1.9.4.js"></script>
   <!-- jQuery -->
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"
-    integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="src/jquery-3.6.0.min.js"></script>
   <!-- Leaflet-Rotate -->
   <script src="src/leaflet-rotate-src.js"></script>
   <!-- sidebar -->
   <script src="src/svg-icon.js"></script>
   <script src="src/leaflet-sidebar.js"></script>
   <!-- Google Translate -->
-  <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <!--<script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>-->
 
   <script>
-    
+/*    
     function googleTranslateElementInit() {
       new google.translate.TranslateElement({
           pageLanguage: 'en'
         },
         'google_translate_element');
     };    
-
+*/
     const historic = L.tileLayer('./tokyo-map-tiles/{z}/{x}/{y}.png', {
       tms: 1,
       minZoom: 10,
@@ -799,8 +798,12 @@
 
       // On language dropdown change...
       $('#language-select').change(function () {
+        // clear the chapterContent array
+        chapterContent.length = 0;
         // if the selected language is Japanese...
         if (getSelectedLanguage() == "1") {
+          // change the page title
+          document.title = "戦前の東京の女性科学者"; // Women Scientists in Pre-War Tokyo
           // change the following classes to Japanese
           document.getElementsByClassName("sidebar-header")[0].innerHTML = "戦前の東京の女性科学者"; // Women Scientists in Pre-War Tokyo
           document.getElementsByClassName("about")[0].innerHTML = "このプロジェクトについて"; // About This Project
@@ -821,6 +824,8 @@
           document.getElementById("language-select").options[2].textContent = "English";
         } // if the selected language is English or nothing...
         if (getSelectedLanguage() == "2" || getSelectedLanguage() == "0") {
+          // change the page title
+          document.title = "Women Scientists in Pre-War Tokyo";
           // change the following classes to English
           document.getElementsByClassName("sidebar-header")[0].innerHTML = "Women Scientists in Pre-War Tokyo";
           document.getElementsByClassName("about")[0].innerHTML = "About This Project";
@@ -934,8 +939,31 @@
               direction: 'top',
               opacity: 0.9,
               className: 'custom-tooltip',
-            });            
-            
+            });
+    
+            // check if a university is selected from the dropdown
+            if (getSelectedDropdownValue() !== "0") {
+              // if the selected language is nothing or English...
+              if (getSelectedLanguage() == "0" || getSelectedLanguage() == "2") {
+                // if the selected university is associated with the selected institution...
+                if (props.Cont_Name == getSelectedDropdownValue()) {
+                  // Build out the chapterContent array
+                  chapterContent.push('<h6>' + uniName + '</h6><hr><h7>' + props.Description + img + '<br><br><b>Scientists:</b><br>' + props.Scientists + '</h7>');                  
+                };
+              };
+              // if the selected language is Japanese...
+              if (getSelectedLanguage() == "1") {
+                // if the selected university is associated with the selected institution...
+                if (props.Institution_Cont_Jpn == getSelectedDropdownValue()) {
+                  // Build out the chapterContent array
+                  chapterContent.push('<h6>' + uniName + '</h6><hr><h7>' + props.Description_Jpn + img + '<br><br><b>科学者:</b><br>' + props.Scientists_Jpn + '</h7>');
+                };
+              };
+            };
+
+            // Join the chapterContent array, and set it as the innerHTML of the info div
+            info.innerHTML = chapterContent;
+          
           });
         };
         // If the option-two radio button is selected...
@@ -1032,7 +1060,37 @@
               direction: 'top',
               opacity: 0.9,
               className: 'custom-tooltip',
-            });  
+            });
+
+            let img;
+            if (props.img) {
+              img = '<br><br>' + props.img;
+            } else {
+              img = '';
+            };
+            
+            // check if a scientist is selected from the dropdown
+            if (getSelectedDropdownValue() !== "0") {
+              // if the selected language is nothing or English...
+              if (getSelectedLanguage() == "0" || getSelectedLanguage() == "2") {
+                // if the scientist is associated with the selected scientist...
+                if (props.Name == getSelectedDropdownValue()) {
+                  // Build out the chapterContent array
+                  chapterContent.push('<h6>' + props.Name + '<br>' + uniName + '</h6><hr><h7>' + props.Bio + img + '<br><br><b>Scientists:</b><br>' + props.Scientists + '</h7>');                  
+                };
+              };
+              // if the selected language is Japanese...
+              if (getSelectedLanguage() == "1") {
+                // if the scientist is associated with the selected scientist...
+                if (props.Name_Jpn == getSelectedDropdownValue()) {
+                  // Build out the chapterContent array
+                  chapterContent.push('<h6>' + props.Name_Jpn + '<br>' + uniName + '</h6><hr><h7>' + props.Bio_Jpn + img + '<br><br><b>Scientists:</b><br>' + props.Scientists_Jpn + '</h7>');
+                };
+              };
+            };
+
+            // Join the chapterContent array, and set it as the innerHTML of the info div
+            info.innerHTML = chapterContent;            
 
           });
         };
