@@ -373,7 +373,16 @@
             <option value="2">English</option>
           </select>
         </form>
-          
+        
+        <div>
+          <p>
+          <h2 class="choose" id="references">Click to see references.</h2>
+          </p>
+        </div>
+        <!-- Click this button to navigate to references-eng.html -->
+        <div class="button-container">
+          <button id="referencesButton" onclick="showReferences()">References</button>
+        </div>  
 
         <!-- google translate element -->
         <!--<div id="google_translate_element"></div>-->
@@ -820,6 +829,8 @@
           document.getElementById("language-select").options[0].textContent = "言語を選択"; // "Select a Language" in Japanese
           document.getElementById("language-select").options[1].textContent = "日本語"; // "Japanese" in Japanese
           document.getElementById("language-select").options[2].textContent = "English";
+          document.getElementById("references").innerHTML = "参考文献を見るにはクリックしてください。";
+          document.getElementById("referencesButton").textContent = "参考文献";
         } // if the selected language is English or nothing...
         if (getSelectedLanguage() == "2" || getSelectedLanguage() == "0") {
           // change the page title
@@ -841,7 +852,9 @@
           document.getElementById("language").innerHTML = "Read content in Japanese or English.";
           document.getElementById("language-select").options[0].textContent = "Select a Language";
           document.getElementById("language-select").options[1].textContent = "日本語";
-          document.getElementById("language-select").options[2].textContent = "English";        
+          document.getElementById("language-select").options[2].textContent = "English";
+          document.getElementById("references").innerHTML = "Click to see references.";
+          document.getElementById("referencesButton").textContent = "References";
         };
         // If the option-one radio button is selected...
         if (document.getElementById('option-one').checked) {
@@ -1377,7 +1390,21 @@
       return selectedLanguage;
     };
     
-
+    // Define the showReferences() function
+    function showReferences() {
+      // Check which language is selected
+      const selectedLanguage = getSelectedLanguage();
+      // If the selected language is nothing or English...
+      if (selectedLanguage == "0" || selectedLanguage == "2") {
+        // Open the references-eng.html page
+        window.open("references-eng.html");
+      };
+      // If the selected language is Japanese...
+      if (selectedLanguage == "1") {
+        // Open the references-jpn.html page
+        window.open("references-jpn.html");
+      };
+    };
 
 
     /* Some code that centers the map on a marker when the sidebar is open    
